@@ -16,7 +16,8 @@
                     <li><a href="#Promociones y ofertas">Promociones y ofertas</a></li>
                     <li><a href="#Horarios">Horarios</a></li>
                     <li><a href="#Ubicacion">Ubicacion</a></li>
-                    <li><a href="#Contacto">Contactos</a></li>
+                    <li><a href="#Contactos">Contactos</a></li>
+                    <li><a href="#Pedido">Pedidos</a></li>
                 </ul>
             </nav>
         </header>
@@ -48,8 +49,10 @@
                 <p>oferta por tiempo limitado de busos de lana</p>
              </article>
             </section>
+
+            
             <section id="Horarios">
-             <h2>Horarios</h2>
+             <h2>Horarios y precios</h2>
              <article>
                 <h3>Lunes a viernes</h3>
                 <p>Atencion en la mañana de 9 am hasta 12 pm</p>
@@ -58,7 +61,98 @@
                 <h3>sabados y domingos</h3>
                 <p>Atencion en la mañana de 9 am hasta 11 pm</p>
              </article>
+            <table>
+               <caption>Precios por producto y disponibilidad</caption>
+               <thead>
+                  <tr>
+                     <th scope="col">Producto</th>
+                     <th scope="col">Precio</th>
+                     <th scope="col">Disponible</th>
+                  </tr>    
+               </thead>
+               <tbody>
+                  <tr><td>Ropa de lana</td>   <td>Bs 28</td>  <td>hasta agotar stock</td></tr>
+                  <tr><td>Pijamas</td>   <td>Bs 60</td>  <td>hasta agotar stock</td></tr>
+                  <tr><td>Poleras</td>   <td>Bs 30</td>  <td>hasta agotar stock</td></tr>
+               </tbody>
+            </table>
+            <figure>
+               <img src="tienda.png"
+                    alt="tienda de ropa de primera mano"
+                    width="600" height="400">
+               <figcaption>La ropa de primera mano</figcaption>
+            </figure>
             </section>
+
+            <section id="Pedido">
+        
+               <h2>Hacer un pedido</h2>
+
+               <form action="/Pedido" method="post">
+
+                  <fieldset>
+                     <legend>Tus datos</legend>
+
+                     <p>
+                     <label for="nombre">Nombre completo</label>
+                     <input type="text" id="nombre" name="nombre"
+                              autocomplete="name" required>
+                     </p>
+
+                     <p>
+                     <label for="email">Correo electrónico</label>
+                     <input type="email" id="email" name="email"
+                              autocomplete="email" required>
+                     </p>
+
+                     <p>
+                     <label for="telefono">Teléfono</label>
+                     <input type="tel" id="telefono" name="telefono"
+                              autocomplete="tel" pattern="[0-9]{7,8}"
+                              title="7 u 8 dígitos, sin espacios">
+                     </p>
+                  </fieldset>
+
+                  <fieldset>
+                     <legend>Tu pedido</legend>
+
+                     <p>
+                     <label for="producto">Producto</label>
+                     <select id="producto" name="producto" required>
+                        <option value="">Elige uno</option>
+                        <option value="dia">Ropa de lana</option>
+                        <option value="integral">Pijama</option>
+                        <option value="molde">Polera</option>
+                     </select>
+                     </p>
+
+                     <p>
+                     <label for="cantidad">Cantidad</label>
+                     <input type="number" id="cantidad" name="cantidad"
+                              min="1" max="100" value="1" required>
+                     </p>
+
+                     <p>
+                     <label for="fecha">Fecha de entrega</label>
+                     <input type="date" id="fecha" name="fecha" required>
+                     </p>
+
+                     <p>
+                     <label for="notas">Alguna indicación</label>
+                     <textarea id="notas" name="notas" rows="3"></textarea>
+                     </p>
+
+                     <p>
+                     <input type="checkbox" id="terminos" name="terminos" required>
+                     <label for="terminos">Acepto que el pedido se confirma por teléfono</label>
+                     </p>
+                  </fieldset>
+
+                  
+                  <button type="submit">Enviar pedido</button>
+               </form>
+            </section>
+
             <section id="Ubicacion">
              <h2>Ubicacion</h2>
              <article>
