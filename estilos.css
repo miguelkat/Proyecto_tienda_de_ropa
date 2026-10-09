@@ -1,0 +1,173 @@
+/* ── 1. EL RESET QUE SE PONE SIEMPRE ───────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* ── 2. CUSTOM PROPERTIES: se define una vez, se usa en todos lados ────── */
+:root {
+  --color-principal: #0F172A;   
+  --color-acento:    #FF0015;   
+  --color-texto:     #2f497a;   
+  --color-suave:     #FF4D59;   
+  --color-fondo:     #F5F5F9;   
+  --color-superficie:#FFFFFF;  
+  --borde:           #D1D5DB;  
+
+  --espacio:     2rem;
+  --espacio-lg:  2rem;
+  --radio:       6px;
+}
+
+/* ── 3. TIPOGRAFÍA Y TAMAÑOS CORREGIDOS ────────────────────────────────── */
+body {
+  margin: 0;
+  padding: 0 var(--espacio);
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-texto);
+  background: var(--color-fondo);
+}
+
+h1, h2, h3 {
+  line-height: 1.2;
+  color: var(--color-principal);
+}
+
+h1 { text-align: center; font-size: 2.8rem; margin-bottom: 0.5rem; }
+h2 { font-size: 2rem; margin-top: var(--espacio-lg); border-bottom: 2px solid var(--color-acento); padding-bottom: 0.3rem; }
+h3 { font-size: 1.4rem; }
+p { max-width: 65ch; }
+
+/* ── 4. ENLACES Y ESTADOS ──────────────────────────────────────────────── */
+a {
+  color: var(--color-principal);
+  text-underline-offset: 2px;
+}
+a:hover { color: var(--color-acento); }
+a:focus-visible {
+  outline: 3px solid var(--color-acento);
+  outline-offset: 2px;
+}
+
+/* ── 5. EL MODELO DE CAJA EN ACCIÓN ────────────────────────────────────── */
+header {
+  padding: var(--espacio-lg) var(--espacio);
+  border-bottom: 4px solid var(--color-acento);
+  margin-bottom: var(--espacio-lg);
+  background: var(--color-superficie);
+  text-align: center;
+  border-radius: 0 0 8px 8px;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: var(--espacio) 0 0;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+nav li { margin-bottom: 0; }
+nav a {
+  text-decoration: none;
+  font-weight: bold;
+  padding: 6px 12px;
+  border-radius: var(--radio);
+}
+nav a:hover {
+  background-color: var(--color-acento);
+  color: #315b8a;
+}
+
+article {
+  background: var(--color-superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  padding: var(--espacio);
+  margin-bottom: var(--espacio);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+/* ── 6. TABLA LEGIBLE ──────────────────────────────────────────────────── */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 40rem;
+  background: var(--color-superficie);
+  margin-bottom: var(--espacio);
+  border-radius: var(--radio);
+  overflow: hidden;
+}
+caption {
+  text-align: left;
+  color: var(--color-principal);
+  font-weight: bold;
+  padding-bottom: 0.5rem;
+}
+th, td {
+  text-align: left;
+  padding: 0.8rem;
+  border-bottom: 1px solid var(--borde);
+}
+th {
+  background: var(--color-principal);
+  color: #fff;
+}
+
+/* ── 7. FORMULARIO ─────────────────────────────────────────────────────── */
+fieldset {
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  padding: var(--espacio);
+  margin-bottom: var(--espacio);
+  max-width: 35rem;
+  background: var(--color-superficie);
+}
+legend {
+  padding: 0 0.4rem;
+  font-weight: 600;
+  color: var(--color-principal);
+}
+label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+}
+input, select, textarea {
+  font-size: 1rem;
+  font-family: inherit;
+  padding: 0.6rem;
+  width: 100%;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  margin-bottom: 1rem;
+}
+input[type="checkbox"] { width: auto; margin-right: 8px; }
+
+button {
+  font-size: 1rem;
+  font-family: inherit;
+  padding: 0.8rem 1.5rem;
+  min-height: 44px;
+  background: var(--color-acento);
+  color: #fff;
+  border: 0;
+  border-radius: var(--radio);
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.5s;
+}
+button:hover { background: var(--color-suave); }
+
+img { max-width: 100%; height: auto; border-radius: var(--radio); }
+
+footer {
+  margin-top: var(--espacio-lg);
+  padding: var(--espacio-lg) var(--espacio);
+  border-top: 1px solid var(--borde);
+  color: var(--color-texto);
+  text-align: center;
+  background: var(--color-superficie);
+}
