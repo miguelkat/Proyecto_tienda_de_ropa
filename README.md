@@ -1,24 +1,31 @@
 # [TIENDA DE ROPA "ANGELICA BOUTIQUE"]
 
-**Estudiante:** Miguel Angel Kato Ortiz
-**Cliente:** Angelica Ortiz Choquehuanca
+**Estudiante:** Miguel Angel Kato Ortiz  
+**Cliente:** Angelica Ortiz Choquehuanca  
+**Ciudad:** La Paz, Bolivia  
 **URL publicada:** [DESPUES, PROXIMA SEMANA]
 
 ## Qué resuelve
-Ayuda en la parte de venta de ropas.
-hacer pedidos de manera facil y rapido.
+- Ayuda en la parte de venta de ropas nuevas por mayor y menor.
+- Permite hacer pedidos y cotizaciones de manera fácil y rápida mediante un catálogo interactivo con filtros y formulario validado.
 
 ## Cómo está construido
-- **Semántica:** este codigo esta construido con los siguientes elementos: <!DOCTYPE html> nos sirve para indicar al navegador que el documento utiliza una version moderna de html, <html lang="es"> Indica que el idioma principal del contenido es el español, <head> es la informacion tecnica de mi pagina codificacion, titulo, y el enlace de estilo, <title> para el titulo oficial de la pestaña del navegador, <header> esta nos sirve para la cabezera, <h> encabezados con jerarquia de los titulos, <nav> define el bloque dedicado a los enlaces de navegacion, <main> es la estructura para el contenido en bloque, <section> agrupa contenidos tematicos relacionados como el catalogo, pedidos, horarios, <article> contenido independiente por ejemplo cada producto, <table> ordanizador de datos en filas y columnas,  <caption> proporciona un titulo o descripcion a la tabla, <img> inserta imagenes a la pagina web, <legend> Este propòrciona un titulo o etiqueta descriptiva, <form> fefine el formulario interativo de la pagina, <div> lo agrege para las redes soliciales en contactos para que entre directo al link de la red social como facebook y Whatsapp, target="_blank" sirve para abrir los enlaces puestas en la pagina evitando que salga de la pagina,<address> indica que el texto correspondiente a una informacion de contacto y un telefono. 
-- **Layout:** LEXBOX: una dimensión para distribuir los elementos de menu y aliniar el contenido de la pagina, GRID: dos dimensiones, sirve para mostrar targetas de productos en filas y columnas 
-- **Diseño:** [paleta y tipografía, y por qué las elegiste] utilze una paleta de colores unisex color azul jugando con los colores para ver que quede bien viendo cada funcion del CUSTOM PROPERTIES y a su lado jugue con los colores en si, el tipo de letra que use fue Times New Roman para un tipo por su letra un poco fina y bien visualmente. 
+- **Semántica HTML5:** Documento estructurado con `<!DOCTYPE html>`, `<html lang="es">`, `<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<table>`, `<figure>`, `<form>`, `<fieldset>`, `<legend>`, `<aside>`, `<footer>` y `<address>`.
+- **Layout y CSS:** 
+  - **Flexbox:** Distribución de cabecera, barra de navegación, controles de filtro y alineaciones de tarjetas.
+  - **CSS Grid:** Distribución de tarjetas dinámicas en el catálogo (`#lista-productos`) y la maqueta general del sitio en pantallas grandes con `grid-template-areas`.
+  - **Custom Properties (Variables CSS):** Paleta unificada con azul corporativo (`--color-principal`), terracota cálido (`--color-acento`), fondos neutros y sombras suaves.
+- **JavaScript y jQuery (Archivos del proyecto):**
+  - [datos.js](file:///c:/Users/Personal/Documents/Proyecto%20tienda%20de%20ropa/datos.js): Catálogo de prendas de vestir (ropa de lana, pijamas, poleras), métodos de arreglos (`map`, `filter`, `reduce`), destructuring y clases (`Producto`, `ProductoConDescuento`).
+  - [funciones.js](file:///c:/Users/Personal/Documents/Proyecto%20tienda%20de%20ropa/funciones.js): Funciones de cálculo de totales, descuentos, tasas y closures (contadores de ventas de prendas).
+  - [app.js](file:///c:/Users/Personal/Documents/Proyecto%20tienda%20de%20ropa/app.js): Configuración principal de Angelica Boutique, tipos y actualización dinámica del subtítulo en cabecera.
+  - [eventos.js](file:///c:/Users/Personal/Documents/Proyecto%20tienda%20de%20ropa/eventos.js): Búsqueda en vivo (`input`), filtro por categorías con delegación de eventos, renderizado dinámico de tarjetas (`render()`), botón para preseleccionar la prenda directo al formulario, y validación estricta de fecha y teléfono en el formulario de pedido.
+  - [jquery-panel.js](file:///c:/Users/Personal/Documents/Proyecto%20tienda%20de%20ropa/jquery-panel.js): Menú móvil desplegable con `.slideToggle()`, panel acordeón interactivo de preguntas frecuentes con animación `.stop()` y `.slideToggle()`, lista escalonada de avisos de temporada con `.delay()` y `.fadeIn()`, y función encadenable `resaltar()`.
+  - [jquery-comparado.js](file:///c:/Users/Personal/Documents/Proyecto%20tienda%20de%20ropa/jquery-comparado.js): Pruebas comparativas entre Vanilla JavaScript y jQuery para manipulación del DOM y eventos.
 
 ## Capturas
-![Escritorio](Captura-Escritorio.PNG)
+![Escritorio](Captura-Escritorio.PNG)  
 ![Móvil 375px](ruta/a/captura-movil.png) DESPUES, PROXIMA SEMANA
 
 ## Lo más difícil
-[Qué problema técnico te costó más y cómo lo resolviste. Sé específico:
-La parte de la alineacion de algunos elementos semanticos como el article el cambio de letra ya que hay diferentes biblioteas para cambiar estas, el menu un poco en la organizacion de los titulos y el tamano y espacios de la pagina web, diseño la parte del diseño de la pagina web ya que de mi queria que sea unisex para todo tipo de personas.]
-
-
+La alineación y adaptabilidad de los componentes dinámicos con CSS Grid y Flexbox, la unificación de los datos del catálogo para que se integren directamente con el formulario de pedidos, y la integración de eventos jQuery para el menú móvil y el acordeón interactivo sin conflictos de scripts.
