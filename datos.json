@@ -1,0 +1,22 @@
+{
+  "_nota": "Datos reales de Angelica Boutique para las demos de fetch/AJAX (Día 12). Catálogo de prendas de vestir de primera mano en La Paz, Bolivia.",
+  "negocio": {
+    "nombre": "Angelica Boutique",
+    "direccion": "Av. Principal 145, La Paz",
+    "coordenadas": { "lat": -16.5004, "lng": -68.1534 },
+    "horario": { "apertura": "09:00", "cierre": "19:00", "dias": "Lunes a viernes" },
+    "telefono": "70124198",
+    "whatsapp": "59170124198"
+  },
+  "categorias": ["lana", "pijamas", "poleras"],
+  "productos": [
+    { "id": 1, "nombre": "Chompa de lana tejida",         "categoria": "lana",    "precio": 28.00, "unidad": "prenda", "stock": 15, "disponible": true,  "proveedor": "Confección propia" },
+    { "id": 2, "nombre": "Pantalón tejido de lana",       "categoria": "lana",    "precio": 35.00, "unidad": "prenda", "stock": 8,  "disponible": true,  "proveedor": "Confección propia" },
+    { "id": 3, "nombre": "Pijama conjunto 2 piezas",      "categoria": "pijamas", "precio": 60.00, "unidad": "conjunto","stock": 12, "disponible": true,  "proveedor": "Importado" },
+    { "id": 4, "nombre": "Pijama térmica afelpada",       "categoria": "pijamas", "precio": 65.00, "unidad": "conjunto","stock": 6,  "disponible": true,  "proveedor": "Importado" },
+    { "id": 5, "nombre": "Polera diseño primavera",       "categoria": "poleras", "precio": 30.00, "unidad": "prenda", "stock": 25, "disponible": true,  "proveedor": "Confección propia" },
+    { "id": 6, "nombre": "Polera básica algodón",         "categoria": "poleras", "precio": 25.00, "unidad": "prenda", "stock": 30, "disponible": true,  "proveedor": "Confección propia" },
+    { "id": 7, "nombre": "Pantalón de lana (Ed. Especial)","categoria": "lana",   "precio": 40.00, "unidad": "prenda", "stock": 0,  "disponible": false, "proveedor": "Confección propia" },
+    { "id": 8, "nombre": "Pijama camisón liviano",        "categoria": "pijamas", "precio": 45.00, "unidad": "prenda", "stock": 10, "disponible": true,  "proveedor": "Importado" }
+  ]
+}

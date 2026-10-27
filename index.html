@@ -5,11 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Angelica Boutique - Venta de ropa nueva por mayor y menor en la ciudad de La Paz. Catálogo de prendas de lana, pijamas y poleras de calidad.">
     <title>Angelica Boutique | Tienda de Ropa en La Paz</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
     <header>
         <div class="cabecera-info">
+            <span class="boutique-pill">✨ Ropa Nueva de Confección · La Paz</span>
             <h1>Angelica Boutique</h1>
             <p>Venta de ropa nueva por mayor y menor en la ciudad de La Paz.</p>
         </div>
@@ -25,6 +29,8 @@
                 <li><a href="#panel">Preguntas</a></li>
                 <li><a href="#Horarios">Horarios</a></li>
                 <li><a href="#Pedido">Pedidos</a></li>
+                <li><a href="#Remoto">Fetch/JSON</a></li>
+                <li><a href="#Comparativa">jQuery vs JS</a></li>
                 <li><a href="#Ubicacion">Ubicación</a></li>
                 <li><a href="#Contactos">Contactos</a></li>
             </ul>
@@ -38,6 +44,8 @@
                 <li><a href="#panel">Preguntas Frecuentes</a></li>
                 <li><a href="#Horarios">Horarios y Precios</a></li>
                 <li><a href="#Pedido">Hacer Pedido</a></li>
+                <li><a href="#Remoto">Carga Fetch/JSON</a></li>
+                <li><a href="#Comparativa">jQuery vs Vanilla</a></li>
                 <li><a href="#Ubicacion">Ubicación</a></li>
                 <li><a href="#Contactos">Contactos</a></li>
             </ul>
@@ -233,6 +241,44 @@
                 <p>Av. Principal 145, zona central. Atendemos con atención personalizada y vestidores cómodos.</p>
             </article>
         </section>
+
+        <!-- SECCIÓN 7: CARGA REMOTA CON FETCH Y JSON (remoto.js) -->
+        <section id="Remoto">
+            <h2>Catálogo vía Fetch y JSON</h2>
+            <p>Las prendas se cargan aquí directamente desde el archivo <code>datos.json</code> usando JavaScript asíncrono (<code>fetch</code> y jQuery <code>$.getJSON</code>). Esta es la base del intercambio de datos en aplicaciones web modernas.</p>
+
+            <div class="controles-remoto">
+                <button type="button" id="cargar-fetch">⬇ Cargar con fetch</button>
+                <button type="button" id="cargar-jquery">⬇ Cargar con jQuery</button>
+                <button type="button" id="cargar-roto" class="btn-roto">✖ Simular error (archivo inexistente)</button>
+            </div>
+
+            <!-- Indicador de estado: cargando / ok / error -->
+            <p id="estado" role="status" aria-live="polite">Presiona un botón para cargar las prendas desde el JSON.</p>
+
+            <!-- Contenedor donde remoto.js inyecta las tarjetas -->
+            <div id="lista-remota"></div>
+        </section>
+
+        <!-- SECCIÓN 8: COMPARATIVA JQUERY VS VANILLA JS (jquery-comparado.js) -->
+        <section id="Comparativa">
+            <h2>Comparativa: jQuery vs Vanilla JavaScript</h2>
+            <p>Ambos enfoques pueden modificar el DOM, manejar eventos y aplicar estilos. El siguiente demo muestra las dos formas de hacer exactamente lo mismo:</p>
+
+            <div class="demo-comparativa">
+                <div class="demo-bloque">
+                    <h3>Vanilla JavaScript</h3>
+                    <p id="salida-vanilla">Párrafo controlado con Vanilla JS.</p>
+                    <button type="button" id="boton-vanilla">Resaltar con JS puro</button>
+                </div>
+
+                <div class="demo-bloque">
+                    <h3>jQuery</h3>
+                    <p id="salida-jquery">Párrafo controlado con jQuery.</p>
+                    <button type="button" id="boton-jquery">Resaltar con jQuery</button>
+                </div>
+            </div>
+        </section>
     </main>
 
     <!-- BARRA LATERAL -->
@@ -252,11 +298,59 @@
 
         <div class="redes-sociales">
             <h3>Nuestras Redes</h3>
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">Facebook</a>
-            <a href="https://wa.me/59170124198?text=Hola,%20vengo%20de%20su%20web%20y%20quiero%20consultar%20sobre%20la%20ropa" target="_blank" rel="noopener noreferrer">WhatsApp Directo</a>
+            <div class="redes-iconos">
+                <!-- WhatsApp -->
+                <a href="https://wa.me/59170124198?text=Hola,%20vengo%20de%20su%20web%20y%20quiero%20consultar%20sobre%20la%20ropa" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   class="red-btn red-whatsapp" 
+                   aria-label="WhatsApp" 
+                   title="WhatsApp">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true">
+                        <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm.01 1.67c4.56 0 8.25 3.69 8.25 8.24 0 4.56-3.69 8.25-8.25 8.25-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.55 3.69-8.24 8.25-8.24zm4.53 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.65.81-.8 1-.15.19-.29.21-.54.08-.25-.12-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.39-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.15.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.12-.56-1.35-.77-1.85-.2-.49-.41-.42-.56-.43h-.48c-.16 0-.43.06-.66.31-.23.25-.87.85-.87 2.08 0 1.22.89 2.4 1.01 2.57.13.16 1.76 2.68 4.25 3.76.6.26 1.06.41 1.42.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.14-1.19-.06-.1-.23-.16-.48-.29z"/>
+                    </svg>
+                </a>
+
+                <!-- Instagram -->
+                <a href="https://instagram.com" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   class="red-btn red-instagram" 
+                   aria-label="Instagram" 
+                   title="Instagram">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <rect x="2.5" y="2.5" width="19" height="19" rx="5.5" ry="5.5"></rect>
+                        <circle cx="12" cy="12" r="4.2"></circle>
+                        <circle cx="17.6" cy="6.4" r="1.3" fill="currentColor" stroke="none"></circle>
+                    </svg>
+                </a>
+
+                <!-- Facebook -->
+                <a href="https://facebook.com" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   class="red-btn red-facebook" 
+                   aria-label="Facebook" 
+                   title="Facebook">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true">
+                        <path d="M13.5 21.5v-8.2h2.7l.4-3.2h-3.1V8.05c0-.93.26-1.57 1.6-1.57h1.7V3.62c-.3-.04-1.32-.12-2.51-.12-2.48 0-4.18 1.52-4.18 4.3v2.3H7v3.2h2.71v8.2h3.79z"/>
+                    </svg>
+                </a>
+            </div>
         </div>
         <p><small>&copy; 2026 Angelica Boutique. Todos los derechos reservados.</small></p>
     </footer>
+
+    <!-- Botón Flotante Interactivo de WhatsApp con Animación Pulsante -->
+    <a href="https://wa.me/59170124198?text=Hola,%20vengo%20de%20su%20web%20y%20quiero%20consultar%20sobre%20la%20ropa" 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       class="whatsapp-flotante" 
+       aria-label="Contactar por WhatsApp">
+        <span class="whatsapp-halo"></span>
+        <span class="whatsapp-icono" aria-hidden="true">💬</span>
+        <span class="whatsapp-label">¿Consultas? Escríbenos</span>
+    </a>
 
     <!-- ── SCRIPTS DEL PROYECTO ────────────────────────────────────────── -->
     <!-- 1. Biblioteca jQuery 3.7.1 -->
@@ -276,5 +370,11 @@
 
     <!-- 6. Componentes interactivos jQuery (Menú móvil, acordeón y efectos escalonados) -->
     <script src="jquery-panel.js"></script>
+
+    <!-- 7. Carga remota con fetch/AJAX y jQuery.getJSON (Día 12) -->
+    <script src="remoto.js"></script>
+
+    <!-- 8. Comparativa didáctica Vanilla JS vs jQuery -->
+    <script src="jquery-comparado.js"></script>
 </body>
 </html>

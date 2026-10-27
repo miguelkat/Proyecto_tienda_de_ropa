@@ -24,10 +24,11 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    lista.forEach(p => {
+    lista.forEach((p, index) => {
       const tarjeta = document.createElement("article");
       tarjeta.className = `tarjeta ${p.stock === 0 ? "agotado" : ""}`;
       tarjeta.dataset.categoria = p.categoria;
+      tarjeta.style.setProperty("--i", index);
 
       tarjeta.innerHTML = `
         <div class="tarjeta-cabecera">
@@ -127,6 +128,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (seccionPedido) {
           seccionPedido.scrollIntoView({ behavior: "smooth" });
+          const fieldset = seccionPedido.querySelector("fieldset");
+          if (fieldset) {
+            fieldset.classList.remove("pedido-resaltado");
+            void fieldset.offsetWidth;
+            fieldset.classList.add("pedido-resaltado");
+          }
           const inputCantidad = document.querySelector("#cantidad");
           if (inputCantidad) inputCantidad.focus();
         }

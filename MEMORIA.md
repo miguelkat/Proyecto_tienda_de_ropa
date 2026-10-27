@@ -68,7 +68,7 @@ Se utilizó HTML5 estándar priorizando la semántica, el SEO y la accesibilidad
   - **`#Pedido`:** Formulario dividido semánticamente en `<fieldset>` y `<legend>` (Datos de contacto y Detalle del pedido), con controles nativos de tipo `text`, `email`, `tel`, `date`, `number`, `select`, `textarea` y `checkbox`.
   - **`#Ubicacion`:** Dirección física en La Paz.
 - **`<aside>`:** Información complementaria y de confianza para el comprador (*¿Sabías que?*).
-- **`<footer>`:** Datos de contacto con `<address>`, enlace a llamada telefónica directa, enlaces con `target="_blank"` a redes sociales (WhatsApp y Facebook) y derechos de autor.
+- **`<footer>`:** Datos de contacto con `<address>`, enlace a llamada telefónica directa, botones interactivos con `target="_blank"` a redes sociales (WhatsApp, Instagram y Facebook) e información de derechos de autor.
 
 ---
 
