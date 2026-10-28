@@ -56,17 +56,42 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ── 3. FUNCIÓN ACTUALIZAR: FILTRAR Y RENDERIZAR ───────────────────────
+  // ── 3. FUNCIÓN ACTUALIZAR: FILTRAR, ORDENAR Y RENDERIZAR ──────────────
+  function obtenerCriterioOrden() {
+    if (typeof preferencias !== "undefined" && preferencias && preferencias.orden) {
+      return preferencias.orden;
+    }
+    const selectOrden = document.querySelector("#orden");
+    return selectOrden ? selectOrden.value : "nombre";
+  }
+
+  function ordenarProductos(lista, criterio) {
+    const copia = [...lista];
+    switch (criterio) {
+      case "precio-asc":
+        return copia.sort((a, b) => a.precio - b.precio);
+      case "precio-desc":
+        return copia.sort((a, b) => b.precio - a.precio);
+      case "stock":
+        return copia.sort((a, b) => b.stock - a.stock);
+      case "nombre":
+      default:
+        return copia.sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));
+    }
+  }
+
   function actualizar() {
     if (typeof productos === "undefined") {
       console.warn("El arreglo 'productos' no se ha cargado todavía.");
       return;
     }
 
-    const visibles = productos
+    const filtrados = productos
       .filter(p => categoriaActiva === "todos" || p.categoria === categoriaActiva)
       .filter(p => p.nombre.toLowerCase().includes(textoBuscado.toLowerCase()) || 
                    (p.descripcion && p.descripcion.toLowerCase().includes(textoBuscado.toLowerCase())));
+
+    const visibles = ordenarProductos(filtrados, obtenerCriterioOrden());
 
     render(visibles);
 
@@ -74,6 +99,11 @@ document.addEventListener("DOMContentLoaded", () => {
       resultado.textContent = `Mostrando ${visibles.length} de ${productos.length} prendas registradas`;
     }
   }
+
+  // Escuchar cambios de preferencias (ej. cambio en #orden o restablecimiento)
+  document.addEventListener("preferencias:cambiadas", () => {
+    actualizar();
+  });
 
   // Inicialización de la vista
   actualizar();

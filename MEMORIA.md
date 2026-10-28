@@ -36,9 +36,12 @@ Proyecto tienda de ropa/
 ├── index.html              # Estructura semántica completa (HTML5)
 ├── estilos.css             # Hoja de estilos centralizada (CSS3, Flexbox, Grid, Custom Properties)
 ├── datos.js                # Modelo de datos, catálogo oficial de prendas y clases ES6
+├── datos.json              # Fuente de datos JSON para carga asíncrona (fetch / AJAX)
 ├── funciones.js            # Funciones puras de cálculo, utilidades y closures
 ├── app.js                  # Inicialización general, configuración y metadatos
-├── eventos.js              # Controlador del DOM: render dinámico, búsqueda, filtros y formulario
+├── eventos.js              # Controlador del DOM: render dinámico, búsqueda, filtros, orden y formulario
+├── preferencias.js         # Persistencia en localStorage (tema y orden) y Geolocalización (Haversine)
+├── remoto.js               # Peticiones asíncronas con fetch (async/await) y $.getJSON
 ├── jquery-panel.js         # Módulos interactivos jQuery (menú móvil, acordeón y avisos)
 ├── jquery-comparado.js     # Script de comparación técnica (Vanilla JS vs. jQuery)
 ├── README.md               # Documentación y ficha técnica del repositorio
@@ -136,6 +139,13 @@ El diseño fue elaborado con **CSS moderno puro (Vanilla CSS)**, sin sobrecargar
 - **Acordeón Exclusivo:** Delegación de eventos sobre `#acordeon .titulo`. Emplea `.stop(true, true)` para limpiar la cola de animaciones (evitando el clásico bug de encolamiento por clics repetidos) y cierra automáticamente los paneles hermanos no seleccionados con `.not()`.
 - **Avisos Escalonados de Temporada:** Uso conjunto de `.each()`, `.delay(indice * 120)` y `.fadeIn(250)` para hacer aparecer los avisos uno tras otro de forma secuencial.
 - **Chaining (Encadenamiento):** Función utilitaria `resaltar($seleccion)` que devuelve la selección jQuery permitiendo encadenar métodos posteriores como `.css()`.
+
+---
+
+### 4.7 Almacenamiento Web y Geolocalización (`preferencias.js`)
+- **Persistencia con `localStorage`:** Almacena las preferencias bajo la clave `"angelica-boutique:preferencias"` empleando bloques `try/catch` para prevenir errores ante JSON corrupto o bloqueo de almacenamiento.
+- **Modo Oscuro y Ordenamiento Sincronizado:** Alterna la clase `.tema-oscuro` en `<body>` actualizando `aria-pressed` en `#tema-toggle`, y emite el evento personalizado `preferencias:cambiadas` para que `eventos.js` reordene automáticamente el catálogo (por nombre, precio ascendente/descendente o disponibilidad).
+- **Geolocalización (`navigator.geolocation`):** Calcula la distancia en kilómetros desde la ubicación actual del usuario hasta la tienda en La Paz (`lat: -16.5331297, lng: -68.1867331`, referenciada directamente desde su enlace oficial de Google Maps: `https://maps.app.goo.gl/zS3h2XczvwezXcsA6`) utilizando la fórmula de Haversine y manejando estados de carga, éxito y códigos de error (`PERMISSION_DENIED`, `POSITION_UNAVAILABLE`, `TIMEOUT`), permitiendo además generar la ruta de cómo llegar en tiempo real.
 
 ---
 

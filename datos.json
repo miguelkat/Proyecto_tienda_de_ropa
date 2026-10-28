@@ -3,7 +3,8 @@
   "negocio": {
     "nombre": "Angelica Boutique",
     "direccion": "Av. Principal 145, La Paz",
-    "coordenadas": { "lat": -16.5004, "lng": -68.1534 },
+    "coordenadas": { "lat": -16.5331297, "lng": -68.1867331 },
+    "mapsUrl": "https://maps.app.goo.gl/zS3h2XczvwezXcsA6",
     "horario": { "apertura": "09:00", "cierre": "19:00", "dias": "Lunes a viernes" },
     "telefono": "70124198",
     "whatsapp": "59170124198"
