@@ -1,3 +1,10 @@
+/* ═════════════════════════════════════════════════════════════════════════
+   ARCHIVO: eventos.js (Día 9 / Referencia Día 14 - Eventos y Formularios)
+   PROYECTO: Angelica Boutique - Tienda de Ropa en La Paz
+   PROPÓSITO: Escuchar buscador, botones de categoría, ordenamiento y
+              validación del formulario de pedidos usando render() de render.js.
+   ═════════════════════════════════════════════════════════════════════════ */
+
 // ── 1. ELEMENTOS QUE SE VAN A ESCUCHAR ──────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
   const buscador = document.querySelector("#buscador");
@@ -9,54 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let categoriaActiva = "todos";
   let textoBuscado = "";
 
-  // ── 2. FUNCIÓN RENDER: DIBUJAR TARJETAS DINÁMICAMENTE CON IMÁGENES ─────
-  function render(lista) {
-    if (!contenedorLista) return;
-    contenedorLista.innerHTML = "";
-
-    if (lista.length === 0) {
-      contenedorLista.innerHTML = `
-        <article class="tarjeta sin-resultados" style="grid-column: 1 / -1; text-align: center; padding: 2rem;">
-          <h3>No se encontraron productos</h3>
-          <p>Intenta con otra palabra clave o selecciona otra categoría.</p>
-        </article>
-      `;
-      return;
-    }
-
-    lista.forEach((p, index) => {
-      const tarjeta = document.createElement("article");
-      tarjeta.className = `tarjeta ${p.stock === 0 ? "agotado" : ""}`;
-      tarjeta.dataset.categoria = p.categoria;
-      tarjeta.style.setProperty("--i", index);
-
-      tarjeta.innerHTML = `
-        <div class="tarjeta-cabecera">
-          <span class="categoria-tag">${p.categoria.toUpperCase()}</span>
-          ${p.stock === 0 ? '<span class="badge-agotado">Agotado</span>' : ''}
-        </div>
-        ${
-          p.imagen
-            ? `<figure class="tarjeta-imagen">
-                 <img src="${p.imagen}" alt="${p.nombre}" loading="lazy">
-               </figure>`
-            : ""
-        }
-        <h3>${p.nombre}</h3>
-        <p class="descripcion-corta">${p.descripcion || "Prenda de primera calidad."}</p>
-        <p class="precio">Bs ${p.precio.toFixed(2)}</p>
-        <p class="stock">${p.stock > 0 ? `Disponible: ${p.stock} unidades` : "Sin stock disponible"}</p>
-        ${
-          p.stock > 0
-            ? `<button type="button" class="btn-seleccionar" data-nombre="${p.nombre}">Pedir esta prenda</button>`
-            : `<button type="button" class="btn-agotado" disabled>No disponible</button>`
-        }
-      `;
-      contenedorLista.appendChild(tarjeta);
-    });
-  }
-
-  // ── 3. FUNCIÓN ACTUALIZAR: FILTRAR, ORDENAR Y RENDERIZAR ──────────────
+  // ── 2. FUNCIÓN ACTUALIZAR: FILTRAR, ORDENAR Y LLAMAR A RENDER() ────────
   function obtenerCriterioOrden() {
     if (typeof preferencias !== "undefined" && preferencias && preferencias.orden) {
       return preferencias.orden;
@@ -69,6 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const copia = [...lista];
     switch (criterio) {
       case "precio-asc":
+      case "precio":
         return copia.sort((a, b) => a.precio - b.precio);
       case "precio-desc":
         return copia.sort((a, b) => b.precio - a.precio);
@@ -88,12 +49,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const filtrados = productos
       .filter(p => categoriaActiva === "todos" || p.categoria === categoriaActiva)
-      .filter(p => p.nombre.toLowerCase().includes(textoBuscado.toLowerCase()) || 
-                   (p.descripcion && p.descripcion.toLowerCase().includes(textoBuscado.toLowerCase())));
+      .filter(p =>
+        p.nombre.toLowerCase().includes(textoBuscado.toLowerCase()) ||
+        (p.descripcion && p.descripcion.toLowerCase().includes(textoBuscado.toLowerCase())) ||
+        (p.talla && p.talla.toLowerCase().includes(textoBuscado.toLowerCase()))
+      );
 
     const visibles = ordenarProductos(filtrados, obtenerCriterioOrden());
 
-    render(visibles);
+    // Llama a render() definido en render.js
+    if (typeof render === "function") {
+      render(visibles);
+    }
 
     if (resultado) {
       resultado.textContent = `Mostrando ${visibles.length} de ${productos.length} prendas registradas`;
@@ -108,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Inicialización de la vista
   actualizar();
 
-  // ── 4. EVENTO INPUT EN BUSCADOR ───────────────────────────────────────
+  // ── 3. EVENTO INPUT EN BUSCADOR ───────────────────────────────────────
   if (buscador) {
     buscador.addEventListener("input", (event) => {
       textoBuscado = event.target.value.trim();
@@ -116,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ── 5. DELEGACIÓN DE EVENTOS EN BOTONES DE FILTRO ─────────────────────
+  // ── 4. DELEGACIÓN DE EVENTOS EN BOTONES DE FILTRO ─────────────────────
   if (filtros) {
     filtros.addEventListener("click", (event) => {
       const boton = event.target.closest("button");
@@ -131,7 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ── 6. SELECCIÓN DE PRENDA DIRECTO AL FORMULARIO ───────────────────────
+  // ── 5. SELECCIÓN DE PRENDA DIRECTO AL FORMULARIO ───────────────────────
   if (contenedorLista) {
     contenedorLista.addEventListener("click", (event) => {
       const boton = event.target.closest(".btn-seleccionar");
@@ -144,15 +111,15 @@ document.addEventListener("DOMContentLoaded", () => {
       if (selectProducto) {
         let encontrada = false;
         for (let i = 0; i < selectProducto.options.length; i++) {
-          if (selectProducto.options[i].text.toLowerCase().includes(nombrePrenda.toLowerCase()) ||
-              nombrePrenda.toLowerCase().includes(selectProducto.options[i].text.toLowerCase())) {
+          if (selectProducto.options[i].value.toLowerCase() === nombrePrenda.toLowerCase() ||
+            selectProducto.options[i].text.toLowerCase().includes(nombrePrenda.toLowerCase())) {
             selectProducto.selectedIndex = i;
             encontrada = true;
             break;
           }
         }
         if (!encontrada) {
-          const nuevaOpcion = new Option(nombrePrenda, nombrePrenda.toLowerCase().replace(/\s+/g, '-'), true, true);
+          const nuevaOpcion = new Option(nombrePrenda, nombrePrenda, true, true);
           selectProducto.add(nuevaOpcion);
         }
 
@@ -171,7 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ── 7. EL EVENTO SUBMIT Y PREVENTDEFAULT EN EL PEDIDO ─────────────────
+  // ── 6. EL EVENTO SUBMIT Y PREVENTDEFAULT EN EL PEDIDO ─────────────────
   if (formulario) {
     formulario.addEventListener("submit", (event) => {
       event.preventDefault();
@@ -236,7 +203,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// ── 8. EXPRESIONES REGULARES DE REFERENCIA ──────────────────────────────
+// ── 7. EXPRESIONES REGULARES DE REFERENCIA ──────────────────────────────
 const PATRONES = {
   telefono: /^[0-9]{7,8}$/,
   correo: /^[^@\s]+@[^@\s]+\.[a-z]{2,}$/i,

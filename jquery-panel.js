@@ -1,8 +1,3 @@
-/* ═════════════════════════════════════════════════════════════════════════
-   DEMO DEL DÍA 11 - jQuery: eventos, efectos y funciones
-   Adaptado para Angelica Boutique: menú móvil, acordeón y avisos de temporada.
-   ═════════════════════════════════════════════════════════════════════════ */
-
 $(function () {
   // ── 1. .on() ES LA FORMA ÚNICA ──────────────────────────────────────────
   // Menú móvil desplegable con slideToggle

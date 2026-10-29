@@ -1,100 +1,119 @@
-// ── RENDERIZADO MODULAR Y DINÁMICO DEL DOM ──────────────────────────────
+/* ═════════════════════════════════════════════════════════════════════════
+   ARCHIVO: render.js (Día 8 / Referencia Día 14 - El DOM)
+   PROYECTO: Angelica Boutique - Tienda de Ropa en La Paz
+   PROPÓSITO: Transformar el arreglo de objetos de `datos.js` en tarjetas
+              HTML interactivas y arrastrables dentro de `#lista-productos`.
+   ═════════════════════════════════════════════════════════════════════════ */
 
+// ── 1. SELECCIONAR ELEMENTOS DEL DOM ─────────────────────────────────────
+const contenedor = document.querySelector("#lista-productos");
+const titulos = document.querySelectorAll("h2");
+
+console.log("El contenedor de catálogo existe:", contenedor !== null);
+console.log("Hay", titulos.length, "encabezados h2 en la página");
+
+// ── 2. CREAR ELEMENTOS: UNA TARJETA POR PRENDA ───────────────────────────
 /**
- * Genera la tarjeta HTML para una prenda del catálogo
+ * Construye un elemento <article class="tarjeta"> a partir de un objeto producto.
+ * @param {Object} producto - Objeto prenda proveniente de datos.js
+ * @param {number} [index=0] - Índice para escalonar la animación de entrada
+ * @returns {HTMLElement} Elemento <article> listo para insertar en el DOM
  */
-function crearTarjeta(producto) {
+function crearTarjeta(producto, index = 0) {
   const articulo = document.createElement("article");
+  const estaDisponible = producto.disponible !== undefined ? producto.disponible : producto.stock > 0;
+
   articulo.classList.add("tarjeta");
-  
-  const estaAgotado = !producto.disponible || producto.stock === 0;
-  if (estaAgotado) {
+  if (!estaDisponible || producto.stock === 0) {
     articulo.classList.add("agotado");
+    articulo.draggable = false;
+  } else {
+    // Habilita Drag & Drop nativo de HTML5 para arrastrar la prenda al carrito
+    articulo.draggable = true;
   }
 
-  // Atributos de datos para búsqueda, filtrado y pedidos
+  const coloresTexto = Array.isArray(producto.colores)
+    ? producto.colores.join(", ")
+    : producto.colores || "";
+
+  // Atributos data-* para recordar a qué prenda corresponde al arrastrarla
   articulo.dataset.nombre = producto.nombre;
-  articulo.dataset.categoria = producto.categoria;
-  articulo.dataset.id = producto.id;
   articulo.dataset.precio = producto.precio;
+  articulo.dataset.imagen = producto.imagen || "";
+  articulo.dataset.talla = producto.talla || "Estándar";
+  articulo.dataset.colores = coloresTexto;
+  articulo.dataset.stock = producto.stock;
+  articulo.dataset.categoria = producto.categoria;
+  articulo.style.setProperty("--i", index);
 
   articulo.innerHTML = `
     <div class="tarjeta-cabecera">
       <span class="categoria-tag">${producto.categoria.toUpperCase()}</span>
-      ${estaAgotado ? '<span class="badge-agotado">Agotado</span>' : '<span class="badge-disponible">En Stock</span>'}
+      ${!estaDisponible || producto.stock === 0
+      ? '<span class="badge-agotado">Agotado</span>'
+      : '<span class="badge-arrastrable" title="Arrastra esta prenda a Mi bandeja">⠿ Arrastrar a bandeja</span>'
+    }
     </div>
-    ${
-      producto.imagen
-        ? `<figure class="tarjeta-imagen">
-             <img src="${producto.imagen}" alt="${producto.nombre}" loading="lazy">
+    ${producto.imagen
+      ? `<figure class="tarjeta-imagen">
+             <img src="${producto.imagen}" alt="${producto.nombre}" loading="lazy" draggable="false">
            </figure>`
-        : ""
+      : ""
     }
     <h3>${producto.nombre}</h3>
-    <p class="descripcion-corta">${producto.descripcion || "Prenda nueva de confección de primera mano en La Paz."}</p>
-    <div class="precio-contenedor">
-      <p class="precio">Bs ${producto.precio.toFixed(2)}</p>
-      <span class="tag-mayorista">🔥 15% desc. x mayor (≥6 unid.)</span>
-    </div>
-    <p class="stock">${!estaAgotado ? `Disponible: ${producto.stock} unidades` : "Sin stock por el momento"}</p>
-    ${
-      !estaAgotado
-        ? `<button type="button" class="btn-seleccionar" data-nombre="${producto.nombre}" data-precio="${producto.precio}">Pedir esta prenda</button>`
-        : `<button type="button" class="btn-agotado" disabled>No disponible</button>`
+    <p class="descripcion-corta">${producto.descripcion || "Prenda de primera calidad confeccionada en La Paz."}</p>
+    ${producto.talla
+      ? `<p class="prenda-detalles" style="font-size:0.84rem; margin:0.3rem 0; color:var(--color-suave);">
+             <strong>Talla:</strong> ${producto.talla} ${coloresTexto ? `· <strong>Color:</strong> ${coloresTexto}` : ''}
+           </p>`
+      : ""
+    }
+    <p class="precio">Bs ${producto.precio.toFixed(2)}</p>
+    <p class="stock">${estaDisponible && producto.stock > 0 ? `Disponible: ${producto.stock} unidades` : "Agotado temporalmente"}</p>
+    ${estaDisponible && producto.stock > 0
+      ? `<div class="tarjeta-acciones">
+             <button type="button" class="btn-agregar-carrito"
+               data-nombre="${producto.nombre}"
+               data-precio="${producto.precio}">➕ Agregar a mi bandeja</button>
+             <button type="button" class="btn-seleccionar btn-pedir-secundario" data-nombre="${producto.nombre}">Pedir directo</button>
+           </div>`
+      : `<button type="button" class="btn-agotado" disabled>No disponible</button>`
     }
   `;
 
   return articulo;
 }
 
+// ── 3. PATRÓN RENDER: VACIAR -> RECORRER -> INSERTAR ─────────────────────
 /**
- * Renderiza la lista de productos en el contenedor principal usando DocumentFragment
+ * Renderiza una lista de prendas en el contenedor #lista-productos.
+ * @param {Array} lista - Arreglo de objetos de prendas a mostrar
  */
 function render(lista) {
-  const destino = document.querySelector("#lista-productos");
-  const elementoResultado = document.querySelector("#resultado");
-
+  const destino = contenedor || document.querySelector("#lista-productos");
   if (!destino) return;
 
+  // 1. Vaciar el contenedor para evitar duplicados
   destino.innerHTML = "";
 
+  // Caso vacío
   if (!lista || lista.length === 0) {
     destino.innerHTML = `
-      <article class="tarjeta sin-resultados" style="grid-column: 1 / -1; text-align: center; padding: 2.5rem 1.5rem;">
-        <h3>No se encontraron prendas</h3>
-        <p>Intenta con otra palabra clave o selecciona otra categoría en los filtros superiores.</p>
+      <article class="tarjeta sin-resultados" style="grid-column: 1 / -1; text-align: center; padding: 2rem;">
+        <h3>No hay prendas que coincidan con tu búsqueda</h3>
+        <p>Intenta con otra palabra clave (ej. polera, kaki, pantalón, lana) o selecciona otra categoría.</p>
       </article>
     `;
-    if (elementoResultado) {
-      elementoResultado.textContent = "Mostrando 0 prendas coincidentes";
-    }
     return;
   }
 
-  const fragmento = document.createDocumentFragment();
-  lista.forEach(producto => {
-    fragmento.appendChild(crearTarjeta(producto));
+  // 2. Recorrer los datos y 3. Insertar cada tarjeta
+  lista.forEach((producto, index) => {
+    destino.append(crearTarjeta(producto, index));
   });
-  destino.appendChild(fragmento);
-
-  if (elementoResultado && typeof productos !== "undefined") {
-    elementoResultado.textContent = `Mostrando ${lista.length} de ${productos.length} prendas registradas`;
-  }
 }
 
-// Exponer en el ámbito global
-window.render = render;
-window.crearTarjeta = crearTarjeta;
-
-// Inicializar cuando el DOM esté disponible
-function inicializarRender() {
-  if (typeof productos !== "undefined" && Array.isArray(productos)) {
-    render(productos);
-  }
-}
-
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", inicializarRender);
-} else {
-  inicializarRender();
+// ── 4. PINTADO INICIAL ───────────────────────────────────────────────────
+if (typeof productos !== "undefined" && contenedor) {
+  render(productos);
 }

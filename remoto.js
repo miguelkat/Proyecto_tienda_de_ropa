@@ -2,63 +2,34 @@
    ANGELICA BOUTIQUE – Día 12: Ajax, fetch y JSON
    (remoto.js)
 
-   Hasta ayer los datos estaban en datos.js, dentro del proyecto.
-   Hoy llegan de afuera via fetch, y eso cambia una cosa fundamental: TARDAN.
-
-   QUÉ SIGNIFICA ASÍNCRONO. El código no se detiene a esperar. Pide los datos,
-   sigue ejecutando las líneas siguientes, y cuando la respuesta llega, el
-   navegador ejecuta la función que se dejó preparada.
-
-   Por eso la página no se congela mientras carga. Y por eso no se puede
-   escribir así:
-
-       const datos = pedirDatos();   // NO: cuando esta línea termina,
-       console.log(datos);            // los datos todavía no llegaron
-
-   AJAX es el nombre histórico de esta técnica (Asynchronous JavaScript And
-   XML). Hoy se usa JSON casi siempre con fetch o $.getJSON de jQuery.
+   Módulo de consulta asíncrona de inventario en tiempo real desde el archivo
+   datos.json utilizando fetch (async/await) y jQuery.getJSON. Permite al cliente
+   consultar y actualizar el stock disponible sin recargar la página web.
    ═════════════════════════════════════════════════════════════════════════ */
 
 const $estado = document.querySelector("#estado");
 const listaRemota = document.querySelector("#lista-remota");
 
 // ── 1. JSON ─────────────────────────────────────────────────────────────
-// JSON es un formato de TEXTO para intercambiar datos. Se parece a un objeto
-// de JavaScript, pero no es lo mismo:
-//
-//   en JSON                          en un objeto de JavaScript
-//   ─────────────────────────        ──────────────────────────
-//   las claves van entre comillas    no hace falta
-//   dobles "                         simples o dobles, da igual
-//   solo texto, número, booleano,    cualquier cosa, incluidas
-//   null, arreglo y objeto           funciones y fechas
-//   sin comentarios                  con comentarios
-//   sin coma final                   la coma final se tolera
-//
-// Dos funciones, y son inversas:
-//   JSON.parse(texto)     texto  -> objeto
-//   JSON.stringify(obj)   objeto -> texto
+// JSON es el formato estándar de texto para intercambio de datos.
 const textoJson = '{"nombre":"Chompa de lana tejida","precio":28,"disponible":true}';
 const objeto = JSON.parse(textoJson);
-console.log(objeto.precio, typeof objeto.precio);      // 28 "number"
-console.log(JSON.stringify(objeto));                    // vuelve a texto
+console.log("JSON cargado:", objeto.nombre, "Precio:", objeto.precio);
 
-// ── 2. LOS TRES ESTADOS ─────────────────────────────────────────────────
-// Cualquier cosa que venga de la red está SIEMPRE en uno de tres estados:
-// cargando, éxito o error. Los tres se muestran al usuario.
+// ── 2. ESTADOS DE LA CONSULTA (CARGANDO, ÉXITO, ERROR) ───────────────────
 function mostrarEstado(texto, tipo = "info") {
   if (!$estado) return;
   $estado.textContent = texto;
   $estado.className = tipo;
 }
 
-// Renderiza las prendas recibidas del JSON en tarjetas del catálogo
+// Renderiza las prendas recibidas del inventario en tarjetas del catálogo
 function pintarRemoto(prendas) {
   if (!listaRemota) return;
   listaRemota.innerHTML = "";
 
   if (!prendas || prendas.length === 0) {
-    listaRemota.innerHTML = "<p>No se encontraron prendas en los datos.</p>";
+    listaRemota.innerHTML = "<p>No se encontraron prendas registradas en el inventario.</p>";
     return;
   }
 
@@ -66,89 +37,109 @@ function pintarRemoto(prendas) {
     const art = document.createElement("article");
     art.classList.add("tarjeta");
     art.style.setProperty("--i", index);
-    if (!p.disponible) art.classList.add("agotado");
+    art.dataset.nombre = p.nombre;
+    art.dataset.precio = p.precio;
+    art.dataset.imagen = p.imagen || "";
+    art.dataset.talla = p.talla || "Estándar";
+    art.dataset.colores = p.colores || "";
+
+    if (!p.disponible) {
+      art.classList.add("agotado");
+      art.draggable = false;
+    } else {
+      art.draggable = true;
+    }
 
     art.innerHTML = `
       <div class="tarjeta-cabecera">
         <span class="categoria-tag">${p.categoria.toUpperCase()}</span>
-        ${!p.disponible ? '<span class="badge-agotado">Agotado</span>' : ''}
+        ${!p.disponible ? '<span class="badge-agotado">Agotado</span>' : '<span class="badge-arrastrable" title="Arrastra esta prenda a Mi bandeja">⠿ Arrastrar a bandeja</span>'}
       </div>
+      ${
+        p.imagen
+          ? `<figure class="tarjeta-imagen">
+               <img src="${p.imagen}" alt="${p.nombre}" loading="lazy" draggable="false">
+             </figure>`
+          : ""
+      }
       <h3>${p.nombre}</h3>
+      ${
+        p.talla
+          ? `<p class="prenda-detalles" style="font-size:0.84rem; margin:0.3rem 0; color:var(--color-suave);">
+               <strong>Talla:</strong> ${p.talla} ${p.colores ? `· <strong>Color:</strong> ${p.colores}` : ""}
+             </p>`
+          : ""
+      }
       <p class="precio">Bs ${p.precio.toFixed(2)} / ${p.unidad}</p>
-      <p class="stock">${p.disponible ? `${p.stock} en stock` : "Sin stock disponible"}</p>
-      ${p.proveedor ? `<p class="descripcion-corta">Proveedor: ${p.proveedor}</p>` : ""}
+      <p class="stock">${p.disponible ? `Disponible: ${p.stock} unidades en almacén` : "Sin stock por el momento"}</p>
+      ${p.proveedor ? `<p class="descripcion-corta">Confección: ${p.proveedor}</p>` : ""}
+      ${
+        p.disponible
+          ? `<div class="tarjeta-acciones">
+               <button type="button" class="btn-agregar-carrito"
+                 data-nombre="${p.nombre}"
+                 data-precio="${p.precio}">➕ Agregar a mi bandeja</button>
+               <button type="button" class="btn-seleccionar btn-pedir-secundario" data-nombre="${p.nombre}">Pedir directo</button>
+             </div>`
+          : `<button type="button" class="btn-agotado" disabled>Agotado</button>`
+      }
     `;
     listaRemota.appendChild(art);
   });
 }
 
-// ── 3. fetch Y async/await ──────────────────────────────────────────────
-// fetch es la forma actual, y viene en el navegador: no hay que instalar nada.
-//
-// async/await deja leer código asíncrono como si fuera secuencial:
-//   await   "espera aquí a que esto termine, sin congelar la página"
-//   async   marca la función como asíncrona; solo dentro de una se puede usar await
-//
-// ⚠️ EL ERROR QUE TODOS COMETEN LA PRIMERA VEZ:
-// fetch NO lanza un error con un 404 ni con un 500. Por eso hay que
-// comprobar response.ok a mano.
+// ── 3. FETCH Y ASYNC/AWAIT ──────────────────────────────────────────────
 async function cargarConFetch(url = "datos.json") {
-  mostrarEstado("Cargando prendas...", "cargando");
+  mostrarEstado("Consultando almacén de prendas en línea...", "cargando");
 
   try {
     const respuesta = await fetch(url);
 
-    if (!respuesta.ok) {                            // <- la comprobación
-      throw new Error(`El servidor respondió ${respuesta.status}`);
+    if (!respuesta.ok) {
+      throw new Error(`Servidor de inventario respondió con error ${respuesta.status}`);
     }
 
-    const datos = await respuesta.json();           // también tarda: await
+    const datos = await respuesta.json();
     pintarRemoto(datos.productos);
-    mostrarEstado(`✔ ${datos.productos.length} prendas cargadas de ${datos.negocio.nombre}`, "ok");
+    mostrarEstado(`✔ Se actualizaron ${datos.productos.length} prendas disponibles de ${datos.negocio.nombre}`, "ok");
 
   } catch (error) {
-    mostrarEstado(`✖ No se pudieron cargar los datos. ${error.message}`, "error");
+    mostrarEstado(`✖ No se pudo sincronizar el stock en este momento. ${error.message}`, "error");
     if (listaRemota) listaRemota.innerHTML = "";
   }
 }
 
-document.querySelector("#cargar-fetch")
-  ?.addEventListener("click", () => cargarConFetch());
+// ── 4. EVENTOS DE CONTROL ───────────────────────────────────────────────
+function iniciarControlesRemotos() {
+  document.querySelector("#cargar-fetch")
+    ?.addEventListener("click", () => cargarConFetch());
 
-// Un archivo que no existe, para ver el camino del error de verdad
-document.querySelector("#cargar-roto")
-  ?.addEventListener("click", () => cargarConFetch("no-existe.json"));
+  // Simulación de falla de red o archivo inexistente para verificar el manejo de errores
+  document.querySelector("#cargar-roto")
+    ?.addEventListener("click", () => cargarConFetch("no-existe.json"));
 
-// ── 4. LO MISMO CON jQuery ──────────────────────────────────────────────
-// jQuery trae $.getJSON que devuelve un objeto con .done(), .fail(), .always()
-// A diferencia de fetch, jQuery SÍ considera un 404 como fallo y entra en .fail()
-if (typeof $ !== "undefined") {
-  $("#cargar-jquery").on("click", function () {
-    mostrarEstado("Cargando con jQuery...", "cargando");
+  // Opción con jQuery $.getJSON
+  if (typeof $ !== "undefined") {
+    $("#cargar-jquery").on("click", function () {
+      mostrarEstado("Sincronizando inventario con respuesta rápida...", "cargando");
 
-    $.getJSON("datos.json")
-      .done(function (datos) {
-        pintarRemoto(datos.productos);
-        mostrarEstado(`✔ ${datos.productos.length} prendas (vía jQuery)`, "ok");
-      })
-      .fail(function (jqXHR) {
-        mostrarEstado(`✖ Falló la carga: HTTP ${jqXHR.status}`, "error");
-      })
-      .always(function () {
-        console.log("La petición jQuery terminó, con éxito o sin él.");
-      });
-  });
+      $.getJSON("datos.json")
+        .done(function (datos) {
+          pintarRemoto(datos.productos);
+          mostrarEstado(`✔ Sincronizadas ${datos.productos.length} prendas con stock garantizado`, "ok");
+        })
+        .fail(function (jqXHR) {
+          mostrarEstado(`✖ Falló la sincronización: Código ${jqXHR.status}`, "error");
+        })
+        .always(function () {
+          console.log("Consulta de inventario completada.");
+        });
+    });
+  }
 }
 
-// ── 5. QUÉ ES UNA PROMESA ───────────────────────────────────────────────
-// fetch devuelve una promesa. await es la forma de decir "espera a que esta
-// promesa se resuelva y dame el valor".
-//
-// Sin await, la forma antigua es .then():
-//
-//     fetch("datos.json")
-//       .then(r => r.json())
-//       .then(datos => pintarRemoto(datos.productos))
-//       .catch(error => mostrarEstado(error.message, "error"));
-//
-// async/await se lee mejor cuando hay varios pasos encadenados.
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", iniciarControlesRemotos);
+} else {
+  iniciarControlesRemotos();
+}

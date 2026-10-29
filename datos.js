@@ -38,18 +38,22 @@ const productos = [
     categoria: "lana",
     stock: 15,
     disponible: true,
+    talla: "M / L",
+    colores: ["Azul", "Café", "Vino"],
     imagen: "imagenes/chompa-lana.jpg",
     descripcion: "Ropa nueva de lana abrigada, confección de primera mano."
   },
   {
     id: 2,
-    nombre: "Pantalón tejido de lana",
+    nombre: "Pantalón de lana",
     precio: 35.0,
     categoria: "lana",
-    stock: 8,
+    stock: 18,
     disponible: true,
+    talla: "S, M, L, XL",
+    colores: ["Azul", "Negro", "Café", "Plomo"],
     imagen: "imagenes/pantalon-lana.jpg",
-    descripcion: "Pantalón abrigado de tejido de lana suave, ideal para temporada de frío."
+    descripcion: "Pantalón tejido de lana térmico. Tallas: S, M, L, XL. Colores: Azul, Negro, Café y Plomo."
   },
   {
     id: 3,
@@ -58,6 +62,8 @@ const productos = [
     categoria: "pijamas",
     stock: 12,
     disponible: true,
+    talla: "Estándar / M",
+    colores: ["Rosa", "Azul Pastel"],
     imagen: "imagenes/pijama-conjunto.jpg",
     descripcion: "Conjunto de 2 piezas (blusa y pantalón) en suave algodón."
   },
@@ -68,28 +74,34 @@ const productos = [
     categoria: "pijamas",
     stock: 6,
     disponible: true,
-    imagen: "imagenes/pijama-conjunto.jpg",
+    talla: "M / L",
+    colores: ["Gris", "Azul Noche"],
+    imagen: "imagenes/pijama-termica.jpg",
     descripcion: "Pijama abrigada para noche, tela polar hipoalergénica."
   },
   {
     id: 5,
-    nombre: "Polera diseño primavera",
+    nombre: "Polera de algodón Blanca",
+    precio: 30.0,
+    categoria: "poleras",
+    stock: 20,
+    disponible: true,
+    talla: "M",
+    colores: ["Blanco"],
+    imagen: "imagenes/polera-blanca.jpg",
+    descripcion: "Polera 100% algodón peinado, suave y fresca. Talla M, color Blanco puro."
+  },
+  {
+    id: 6,
+    nombre: "Polera de algodón Kaki",
     precio: 30.0,
     categoria: "poleras",
     stock: 25,
     disponible: true,
-    imagen: "imagenes/polera-estampada.jpg",
-    descripcion: "Poleras de diferentes diseños y modelos modernos de temporada."
-  },
-  {
-    id: 6,
-    nombre: "Polera básica algodón",
-    precio: 25.0,
-    categoria: "poleras",
-    stock: 30,
-    disponible: true,
-    imagen: "imagenes/polera-estampada.jpg",
-    descripcion: "Polera de corte unisex, 100% algodón fresco y resistente."
+    talla: "M, L",
+    colores: ["Kaki"],
+    imagen: "imagenes/polera-kaki.jpg",
+    descripcion: "Polera 100% algodón resistente y fresca. Tallas M y L, color Kaki / Beige."
   },
   {
     id: 7,
@@ -98,8 +110,10 @@ const productos = [
     categoria: "lana",
     stock: 0,
     disponible: false,
+    talla: "M / L",
+    colores: ["Plomo Oscuro"],
     imagen: "imagenes/pantalon-lana.jpg",
-    descripcion: "Agotado por el momento. Próxima reposición la semana que viene."
+    descripcion: "Pantalón de lana en reposición de stock. Disponible la próxima semana."
   },
   {
     id: 8,
@@ -108,6 +122,8 @@ const productos = [
     categoria: "pijamas",
     stock: 10,
     disponible: true,
+    talla: "M",
+    colores: ["Perla", "Lavanda"],
     imagen: "imagenes/pijama-conjunto.jpg",
     descripcion: "Pijama fresca estilo camisón de seda sintética transpirable."
   }
@@ -125,7 +141,7 @@ console.log(`${disponibles.length} de ${productos.length} prendas disponibles`);
 const masCara = productos.find(p => p.precio >= 60);
 console.log("Prenda premium encontrada:", masCara);
 
-console.log("¿Incluye 'Polera básica algodón'?:", nombresPrendas.includes("Polera básica algodón"));
+console.log("¿Incluye 'Polera de algodón Blanca'?:", nombresPrendas.includes("Polera de algodón Blanca"));
 console.log("¿Hay prendas agotadas?:", productos.some(p => p.stock === 0));
 console.log("¿Todas tienen precio válido mayor a 0?:", productos.every(p => p.precio > 0));
 
@@ -155,12 +171,14 @@ console.log("Prendas agrupadas por categoría:", porCategoria);
 
 // ── 6. CLASES ───────────────────────────────────────────────────────────
 class Producto {
-  constructor(nombre, precio, stock, categoria = "general", imagen = "") {
+  constructor(nombre, precio, stock, categoria = "general", imagen = "", talla = "", colores = []) {
     this.nombre = nombre;
     this.precio = precio;
     this.stock = stock;
     this.categoria = categoria;
     this.imagen = imagen;
+    this.talla = talla;
+    this.colores = colores;
   }
 
   estaDisponible() {
@@ -172,12 +190,12 @@ class Producto {
   }
 }
 
-const muestraPolera = new Producto("Polera oversize", 32.0, 18, "poleras", "imagenes/polera-estampada.jpg");
+const muestraPolera = new Producto("Polera de algodón Kaki", 30.0, 25, "poleras", "imagenes/polera-kaki.jpg", "M, L", ["Kaki"]);
 console.log(muestraPolera.nombre, "¿Disponible?:", muestraPolera.estaDisponible(), "Valor:", muestraPolera.valorEnStock());
 
 class ProductoConDescuento extends Producto {
-  constructor(nombre, precio, stock, categoria, descuentoPorcentaje, imagen = "") {
-    super(nombre, precio, stock, categoria, imagen);
+  constructor(nombre, precio, stock, categoria, descuentoPorcentaje, imagen = "", talla = "", colores = []) {
+    super(nombre, precio, stock, categoria, imagen, talla, colores);
     this.descuentoPorcentaje = descuentoPorcentaje;
   }
 
@@ -186,7 +204,7 @@ class ProductoConDescuento extends Producto {
   }
 }
 
-const promocionPrimavera = new ProductoConDescuento("2x1 en pantalones de lana", 56.0, 10, "lana", 20, "imagenes/pantalon-lana.jpg");
+const promocionPrimavera = new ProductoConDescuento("2x1 en pantalones de lana", 56.0, 10, "lana", 20, "imagenes/pantalon-lana.jpg", "S, M, L, XL", ["Azul", "Negro", "Café", "Plomo"]);
 console.log(
   `Promoción: ${promocionPrimavera.nombre} | Precio oferta: Bs ${promocionPrimavera.precioFinal().toFixed(2)} | Stock: ${promocionPrimavera.stock}`
 );

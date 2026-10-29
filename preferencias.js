@@ -77,30 +77,41 @@ function aplicarPreferencias() {
   document.dispatchEvent(new CustomEvent("preferencias:cambiadas", { detail: preferencias }));
 }
 
+// Aplicar de inmediato para evitar destellos y reaplicar cuando el DOM esté listo
 aplicarPreferencias();
+document.addEventListener("DOMContentLoaded", aplicarPreferencias);
 
 // ── 4. GUARDAR AL CAMBIAR ───────────────────────────────────────────────
-document.querySelector("#tema-toggle")?.addEventListener("click", () => {
-  preferencias.tema = preferencias.tema === "oscuro" ? "claro" : "oscuro";
-  guardarPreferencias(preferencias);
-  aplicarPreferencias();
-});
+function iniciarControlesPreferencias() {
+  document.querySelector("#tema-toggle")?.addEventListener("click", () => {
+    preferencias.tema = preferencias.tema === "oscuro" ? "claro" : "oscuro";
+    guardarPreferencias(preferencias);
+    aplicarPreferencias();
+  });
 
-document.querySelector("#orden")?.addEventListener("change", (event) => {
-  preferencias.orden = event.target.value;
-  guardarPreferencias(preferencias);
-  aplicarPreferencias();
-});
+  document.querySelector("#orden")?.addEventListener("change", (event) => {
+    preferencias.orden = event.target.value;
+    guardarPreferencias(preferencias);
+    aplicarPreferencias();
+  });
 
-document.querySelector("#olvidar")?.addEventListener("click", () => {
-  localStorage.removeItem(CLAVE);
-  preferencias = { ...PREFERENCIAS_POR_DEFECTO };
-  aplicarPreferencias();
-  const estadoPrefs = document.querySelector("#estado-prefs");
-  if (estadoPrefs) {
-    estadoPrefs.textContent = "Preferencias restablecidas a los valores por defecto.";
-  }
-});
+  document.querySelector("#olvidar")?.addEventListener("click", () => {
+    localStorage.removeItem(CLAVE);
+    preferencias = { ...PREFERENCIAS_POR_DEFECTO };
+    guardarPreferencias(preferencias);
+    aplicarPreferencias();
+    const estadoPrefs = document.querySelector("#estado-prefs");
+    if (estadoPrefs) {
+      estadoPrefs.textContent = "Preferencias restablecidas a los valores por defecto.";
+    }
+  });
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", iniciarControlesPreferencias);
+} else {
+  iniciarControlesPreferencias();
+}
 
 // ── 5. LO QUE NUNCA VA EN localStorage ──────────────────────────────────
 // Nunca guardar contraseñas, tokens de sesión sensibles, números de tarjeta
@@ -152,115 +163,106 @@ function estimarTiempo(km, velocidadKmh) {
   return mins > 0 ? `~${horas} h ${mins} min` : `~${horas} h`;
 }
 
-// Elementos del DOM para la geolocalización
-const $btnUbicarme = document.querySelector("#ubicarme");
-const $ubic = document.querySelector("#estado-ubicacion");
-const $btnRuta = document.querySelector("#ver-ruta");
-const $panelDistancia = document.querySelector("#panel-distancia");
-const $distanciaKm = document.querySelector("#distancia-km");
-const $distanciaUnidad = document.querySelector("#distancia-unidad");
-const $distanciaTitulo = document.querySelector("#distancia-titulo");
-const $distanciaDescripcion = document.querySelector("#distancia-descripcion");
-const $tiempoCaminando = document.querySelector("#tiempo-caminando");
-const $tiempoAuto = document.querySelector("#tiempo-auto");
-const $precisionGps = document.querySelector("#precision-gps");
-const $coordUsuario = document.querySelector("#coord-usuario");
+// Configuración de eventos de Geolocalización
+function iniciarGeolocalizacion() {
+  const $btnUbicarme = document.querySelector("#ubicarme");
+  const $ubic = document.querySelector("#estado-ubicacion");
+  const $btnRuta = document.querySelector("#ver-ruta");
+  const $panelDistancia = document.querySelector("#panel-distancia");
+  const $distanciaKm = document.querySelector("#distancia-km");
+  const $distanciaUnidad = document.querySelector("#distancia-unidad");
+  const $distanciaTitulo = document.querySelector("#distancia-titulo");
+  const $distanciaDescripcion = document.querySelector("#distancia-descripcion");
+  const $tiempoCaminando = document.querySelector("#tiempo-caminando");
+  const $tiempoAuto = document.querySelector("#tiempo-auto");
+  const $precisionGps = document.querySelector("#precision-gps");
+  const $coordUsuario = document.querySelector("#coord-usuario");
 
-$btnUbicarme?.addEventListener("click", () => {
-  if (!$ubic) return;
+  if (!$btnUbicarme) return;
 
-  if (!navigator.geolocation) {
-    $ubic.textContent = "❌ Tu navegador o dispositivo no cuenta con soporte para la API de Geolocalización.";
-    $ubic.className = "error";
-    return;
-  }
+  $btnUbicarme.addEventListener("click", () => {
+    if (!$ubic) return;
 
-  // Estado cargando
-  $ubic.textContent = "🛰️ Solicitando permiso y obteniendo coordenadas GPS en tiempo real...";
-  $ubic.className = "cargando";
-  if ($btnUbicarme) {
+    if (!navigator.geolocation) {
+      $ubic.textContent = "❌ Tu navegador o dispositivo no cuenta con soporte para la API de Geolocalización.";
+      $ubic.className = "error";
+      return;
+    }
+
+    $ubic.textContent = "🛰️ Solicitando permiso y obteniendo coordenadas GPS en tiempo real...";
+    $ubic.className = "cargando";
     $btnUbicarme.disabled = true;
     $btnUbicarme.classList.add("btn-cargando");
-  }
 
-  navigator.geolocation.getCurrentPosition(
-    (position) => {
-      if ($btnUbicarme) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
         $btnUbicarme.disabled = false;
         $btnUbicarme.classList.remove("btn-cargando");
-      }
 
-      const { latitude, longitude, accuracy } = position.coords;
-      const km = distanciaKm(latitude, longitude, LOCAL.lat, LOCAL.lng);
+        const { latitude, longitude, accuracy } = position.coords;
+        const km = distanciaKm(latitude, longitude, LOCAL.lat, LOCAL.lng);
 
-      // Mostrar panel visual enriquecido
-      if ($panelDistancia) {
-        $panelDistancia.style.display = "block";
-      }
-
-      // Si la distancia es menor a 1 km, mostramos metros; si no, kilómetros
-      if (km < 1) {
-        const metros = Math.round(km * 1000);
-        if ($distanciaKm) $distanciaKm.textContent = metros;
-        if ($distanciaUnidad) $distanciaUnidad.textContent = "metros";
-        if ($distanciaTitulo) $distanciaTitulo.textContent = "¡Estás muy cerca de la tienda!";
-        if ($distanciaDescripcion) {
-          $distanciaDescripcion.textContent = `Te encuentras a solo unas cuadras de ${LOCAL.nombre}. ¡Visítanos para probarte la ropa en nuestros vestidores!`;
+        if ($panelDistancia) {
+          $panelDistancia.style.display = "block";
         }
-      } else {
-        if ($distanciaKm) $distanciaKm.textContent = km.toFixed(2);
-        if ($distanciaUnidad) $distanciaUnidad.textContent = "km";
-        if ($distanciaTitulo) $distanciaTitulo.textContent = `A ${km.toFixed(1)} km de distancia`;
-        if ($distanciaDescripcion) {
-          $distanciaDescripcion.textContent = `Calculado desde tu posición actual en línea recta hasta ${LOCAL.nombre} (${LOCAL.direccion}).`;
+
+        if (km < 1) {
+          const metros = Math.round(km * 1000);
+          if ($distanciaKm) $distanciaKm.textContent = metros;
+          if ($distanciaUnidad) $distanciaUnidad.textContent = "metros";
+          if ($distanciaTitulo) $distanciaTitulo.textContent = "¡Estás muy cerca de la tienda!";
+          if ($distanciaDescripcion) {
+            $distanciaDescripcion.textContent = `Te encuentras a solo unas cuadras de ${LOCAL.nombre}. ¡Visítanos para probarte la ropa en nuestros vestidores!`;
+          }
+        } else {
+          if ($distanciaKm) $distanciaKm.textContent = km.toFixed(2);
+          if ($distanciaUnidad) $distanciaUnidad.textContent = "km";
+          if ($distanciaTitulo) $distanciaTitulo.textContent = `A ${km.toFixed(1)} km de distancia`;
+          if ($distanciaDescripcion) {
+            $distanciaDescripcion.textContent = `Calculado desde tu posición actual en línea recta hasta ${LOCAL.nombre} (${LOCAL.direccion}).`;
+          }
         }
-      }
 
-      // Estimaciones de tiempo:
-      // A pie: ~4.5 km/h promedio
-      // En auto / transporte paceño: ~22 km/h promedio por pendientes y tráfico
-      if ($tiempoCaminando) $tiempoCaminando.textContent = estimarTiempo(km, 4.5);
-      if ($tiempoAuto) $tiempoAuto.textContent = estimarTiempo(km, 22);
-      if ($precisionGps) $precisionGps.textContent = `±${Math.round(accuracy)} m`;
-      if ($coordUsuario) $coordUsuario.textContent = `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
+        if ($tiempoCaminando) $tiempoCaminando.textContent = estimarTiempo(km, 4.5);
+        if ($tiempoAuto) $tiempoAuto.textContent = estimarTiempo(km, 22);
+        if ($precisionGps) $precisionGps.textContent = `±${Math.round(accuracy)} m`;
+        if ($coordUsuario) $coordUsuario.textContent = `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
 
-      // Enlace dinámico con ruta paso a paso en Google Maps
-      if ($btnRuta) {
-        $btnRuta.href = `https://www.google.com/maps/dir/?api=1&origin=${latitude},${longitude}&destination=${LOCAL.lat},${LOCAL.lng}&travelmode=driving`;
-        $btnRuta.style.display = "inline-flex";
-      }
+        if ($btnRuta) {
+          $btnRuta.href = `https://www.google.com/maps/dir/?api=1&origin=${latitude},${longitude}&destination=${LOCAL.lat},${LOCAL.lng}&travelmode=driving`;
+          $btnRuta.style.display = "inline-flex";
+        }
 
-      $ubic.innerHTML = `✅ <strong>¡Ubicación calculada con éxito!</strong> Distancia actual: <strong>${km < 1 ? Math.round(km * 1000) + ' m' : km.toFixed(2) + ' km'}</strong> hacia nuestra boutique.`;
-      $ubic.className = "ok";
-    },
-    (error) => {
-      if ($btnUbicarme) {
+        $ubic.innerHTML = `✅ <strong>¡Ubicación calculada con éxito!</strong> Distancia actual: <strong>${km < 1 ? Math.round(km * 1000) + ' m' : km.toFixed(2) + ' km'}</strong> hacia nuestra boutique.`;
+        $ubic.className = "ok";
+      },
+      (error) => {
         $btnUbicarme.disabled = false;
         $btnUbicarme.classList.remove("btn-cargando");
+
+        const mensajes = {
+          [error.PERMISSION_DENIED]:
+            "⚠️ Permiso denegado: Por favor habilita el permiso de ubicación en tu navegador para calcular la distancia automáticamente.",
+          [error.POSITION_UNAVAILABLE]:
+            "⚠️ Ubicación no disponible: No pudimos recibir señal GPS. Comprueba tu conexión a internet o intenta al aire libre.",
+          [error.TIMEOUT]:
+            "⚠️ Tiempo de espera agotado: La solicitud tardó demasiado en responder. Por favor presiona el botón nuevamente.",
+        };
+
+        $ubic.textContent = mensajes[error.code] || "⚠️ Ocurrió un inconveniente al consultar tu ubicación.";
+        $ubic.className = "error";
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 15000,
+        maximumAge: 30000,
       }
+    );
+  });
+}
 
-      const mensajes = {
-        [error.PERMISSION_DENIED]:
-          "⚠️ Permiso denegado: Por favor habilita el permiso de ubicación en tu navegador para calcular la distancia automáticamente.",
-        [error.POSITION_UNAVAILABLE]:
-          "⚠️ Ubicación no disponible: No pudimos recibir señal GPS. Comprueba tu conexión a internet o intenta al aire libre.",
-        [error.TIMEOUT]:
-          "⚠️ Tiempo de espera agotado: La solicitud tardó demasiado en responder. Por favor presiona el botón nuevamente.",
-      };
-
-      $ubic.textContent = mensajes[error.code] || "⚠️ Ocurrió un inconveniente al consultar tu ubicación.";
-      $ubic.className = "error";
-    },
-    {
-      enableHighAccuracy: true,
-      timeout: 15000,
-      maximumAge: 30000,
-    }
-  );
-});
-
-// ── 7. LO QUE SORPRENDE EN LA ENTREGA ───────────────────────────────────
-// - Sincronización en tiempo real entre el selector #orden, localStorage y el
-//   renderizado dinámico de tarjetas del catálogo.
-// - Soporte de modo oscuro completo mediante variables CSS (.tema-oscuro) que
-//   se recuerda automáticamente entre recargas y visitas.
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", iniciarGeolocalizacion);
+} else {
+  iniciarGeolocalizacion();
+}

@@ -1,46 +1,44 @@
-// ── 1. COMPROBAR QUE CARGÓ JQUERY ───────────────────────────────────────
+// ── 1. COMPROBAR DISPONIBILIDAD DE JQUERY ───────────────────────────────
 if (typeof $ !== "undefined") {
-  console.log("jQuery versión:", $.fn.jquery);
+  console.log("jQuery activo:", $.fn.jquery);
 }
 
-// ── 2. COMPARATIVA VANILLA JS VS JQUERY ──────────────────────────────────
+// ── 2. INTERACTIVIDAD EN SECCIÓN DE GARANTÍA Y COMPROMISO ────────────────
 document.addEventListener("DOMContentLoaded", () => {
   const vanillaP = document.querySelector("#salida-vanilla");
   const jqueryP = $("#salida-jquery");
 
   if (vanillaP && jqueryP.length) {
-    console.log("vanilla es un elemento:", vanillaP instanceof HTMLElement);
-    console.log("jQuery es una colección de", jqueryP.length);
-    console.log("mismo elemento:", $(vanillaP)[0] === vanillaP);
+    const textoOriginalVanilla = vanillaP.textContent;
+    const textoOriginalJquery = jqueryP.text();
 
-    // ── 4. LEER Y ESCRIBIR CONTENIDO ────────────────────────────────────
-    vanillaP.textContent = "Cambiado con vanilla: document.querySelector + textContent";
-    jqueryP.text("Cambiado con jQuery: $() + .text()");
-
-    // ── 6. EVENTOS ──────────────────────────────────────────────────────
+    // Botón 1: Interacción con Vanilla JS
     const botonVanilla = document.querySelector("#boton-vanilla");
     if (botonVanilla) {
       botonVanilla.addEventListener("click", () => {
         vanillaP.classList.toggle("resaltado");
+        if (vanillaP.classList.contains("resaltado")) {
+          vanillaP.textContent = "⭐ ¡Prendas seleccionadas! Costuras reforzadas, acabado suave y máxima durabilidad térmica.";
+          botonVanilla.textContent = "✔ Beneficio activado";
+        } else {
+          vanillaP.textContent = textoOriginalVanilla;
+          botonVanilla.textContent = "✨ Destacar beneficio";
+        }
       });
     }
 
+    // Botón 2: Interacción con jQuery
     $("#boton-jquery").on("click", function () {
-      $(this).closest("section").find("#salida-jquery").toggleClass("resaltado");
+      const $parrafo = $("#salida-jquery");
+      $parrafo.toggleClass("resaltado");
+
+      if ($parrafo.hasClass("resaltado")) {
+        $parrafo.text("🔥 Descuento por mayor aplicado: 15% menos al llevar 6 o más prendas para comerciantes y familias.");
+        $(this).text("✔ Condiciones activas");
+      } else {
+        $parrafo.text(textoOriginalJquery);
+        $(this).text("🏷️ Ver condiciones");
+      }
     });
-
-    // ── 7. CHAINING ─────────────────────────────────────────────────────
-    $("#salida-jquery")
-      .addClass("destacado")
-      .attr("data-origen", "jquery")
-      .css("cursor", "pointer");
-
-    vanillaP.classList.add("destacado");
-    vanillaP.setAttribute("data-origen", "vanilla");
-    vanillaP.style.cursor = "pointer";
   }
-
-  // ── 8. COMPARACIÓN DE TARJETAS EN EL DOM ──────────────────────────────
-  console.log("Tarjetas que ve jQuery:", $(".tarjeta").length);
-  console.log("Tarjetas que ve vanilla:", document.querySelectorAll(".tarjeta").length);
 });

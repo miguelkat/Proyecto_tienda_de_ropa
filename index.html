@@ -18,9 +18,9 @@
 <body>
     <header>
         <div class="cabecera-info">
-            <<<<<<< HEAD <span class="boutique-pill">✨ Ropa Nueva Unisex & Confección · La Paz</span>
-                <h1>Angelica Boutique</h1>
-                <p>Venta de ropa nueva por mayor y menor en la ciudad de La Paz.</p>
+            <span class="boutique-pill">✨ Ropa Nueva Unisex & Confección · La Paz</span>
+            <h1>Angelica Boutique</h1>
+            <p>Venta de ropa nueva por mayor y menor en la ciudad de La Paz.</p>
         </div>
 
         <!-- Botón para pantallas pequeñas -->
@@ -30,14 +30,15 @@
         <nav class="nav-escritorio" aria-label="Navegación principal">
             <ul>
                 <li><a href="#Catalogo">Catálogo</a></li>
+                <li><a href="#tablero-zona" class="nav-link-carrito">🛍️ Arma tu surtido <span id="carrito-contador" class="carrito-badge">0</span></a></li>
                 <li><a href="#Promociones">Promociones</a></li>
                 <li><a href="#panel">Preguntas</a></li>
                 <li><a href="#Horarios">Horarios</a></li>
                 <li><a href="#Pedido">Pedidos</a></li>
                 <li><a href="#Preferencias">Preferencias</a></li>
-                <li><a href="#Remoto">Fetch/JSON</a></li>
-                <li><a href="#Comparativa">jQuery vs JS</a></li>
                 <li><a href="#Ubicacion">Ubicación</a></li>
+                <li><a href="#CatalogoOnline">Stock en Línea</a></li>
+                <li><a href="#GarantiaCalidad">Calidad & Compromiso</a></li>
                 <li><a href="#Contactos">Contactos</a></li>
             </ul>
         </nav>
@@ -46,14 +47,15 @@
         <nav id="menu-movil" aria-label="Navegación móvil">
             <ul>
                 <li><a href="#Catalogo">Catálogo</a></li>
+                <li><a href="#tablero-zona">🛍️ Arma tu surtido (Mi bandeja)</a></li>
                 <li><a href="#Promociones">Promociones</a></li>
                 <li><a href="#panel">Preguntas Frecuentes</a></li>
                 <li><a href="#Horarios">Horarios y Precios</a></li>
                 <li><a href="#Pedido">Hacer Pedido</a></li>
                 <li><a href="#Preferencias">Preferencias (Tema/Orden)</a></li>
-                <li><a href="#Remoto">Carga Fetch/JSON</a></li>
-                <li><a href="#Comparativa">jQuery vs Vanilla</a></li>
-                <li><a href="#Ubicacion">Ubicación</a></li>
+                <li><a href="#Ubicacion">Ubicación y Distancia</a></li>
+                <li><a href="#CatalogoOnline">Consulta de Stock en Línea</a></li>
+                <li><a href="#GarantiaCalidad">Calidad & Compromiso</a></li>
                 <li><a href="#Contactos">Contactos</a></li>
             </ul>
         </nav>
@@ -63,14 +65,12 @@
         <!-- SECCIÓN 1: CATÁLOGO DINÁMICO E INTERACTIVO -->
         <section id="Catalogo">
             <h2>Nuestro Catálogo</h2>
-            <p>Explora nuestras prendas de primera mano. Puedes buscar por nombre, filtrar por categoría o personalizar
-                la vista:</p>
+            <p>Explora nuestras prendas de primera mano. Puedes buscar por nombre, filtrar por categoría o arrastrarlas a tu bandeja:</p>
 
             <!-- Panel de Preferencias Persistentes (localStorage - preferencias.js) -->
             <div id="Preferencias" class="panel-preferencias" role="region" aria-label="Preferencias de visualización">
                 <div class="preferencias-controles">
-                    <button type="button" id="tema-toggle" aria-pressed="false" class="btn-preferencia">🌙 Modo
-                        oscuro</button>
+                    <button type="button" id="tema-toggle" aria-pressed="false" class="btn-preferencia">🌙 Modo oscuro</button>
 
                     <div class="orden-grupo">
                         <label for="orden">Ordenar por:</label>
@@ -84,13 +84,12 @@
 
                     <button type="button" id="olvidar" class="btn-olvidar">↺ Restablecer preferencias</button>
                 </div>
-                <p id="estado-prefs" role="status" aria-live="polite">Tema claro activo · Catálogo ordenado por nombre
-                    (A-Z).</p>
+                <p id="estado-prefs" role="status" aria-live="polite">Tema claro activo · Catálogo ordenado por nombre (A-Z).</p>
             </div>
 
             <div class="controles">
                 <label for="buscador" class="visualmente-oculto">Buscar prenda:</label>
-                <input type="search" id="buscador" placeholder="🔍 Buscar prenda (ej. chompa, pijama, lana...)"
+                <input type="search" id="buscador" placeholder="🔍 Buscar prenda (ej. polera, kaki, pantalón, lana...)"
                     autocomplete="off">
 
                 <div id="filtros" role="group" aria-label="Filtro por categoría de ropa">
@@ -103,37 +102,44 @@
 
             <p id="resultado" aria-live="polite">Cargando productos...</p>
 
-            <!-- Contenedor donde eventos.js inyecta dinámicamente las tarjetas -->
+            <!-- Contenedor donde render.js y eventos.js inyectan dinámicamente las tarjetas -->
             <div id="lista-productos"></div>
         </section>
 
         <!-- SECCIÓN 2: PROMOCIONES Y OFERTAS -->
         <section id="Promociones">
-            <h2>Promociones y Ofertas</h2>
-            <article>
-                <img src="imagenes/polera-estampada.jpg" alt="Poleras en promoción"
-                    style="width: 100%; max-height: 180px; object-fit: cover; border-radius: var(--radio-sm); margin-bottom: 0.6rem;">
-                <h3>Promociones por temporada de primavera</h3>
-                <p>Descuentos especiales en prendas livianas y poleras de algodón por compra por docena.</p>
-            </article>
+            <h2>Promociones y Ofertas de Temporada</h2>
+            <p>Aprovecha nuestros descuentos especiales en prendas seleccionadas y compras al por mayor:</p>
 
-            <article>
-                <img src="imagenes/pantalon-lana.jpg" alt="Pantalón de tejido de lana en oferta 2x1"
-                    style="width: 100%; max-height: 180px; object-fit: cover; border-radius: var(--radio-sm); margin-bottom: 0.6rem;">
-                <h3>2x1 en pantalones de lana</h3>
-                <p>Oferta por tiempo limitado en pantalones de tejido de lana suave para combatir el frío paceño.</p>
-            </article>
+            <div class="promos-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: 1.2rem; margin-bottom: 1.5rem;">
+                <article class="promo-tarjeta">
+                    <img src="imagenes/polera-kaki.jpg" alt="Polera de algodón kaki en promoción"
+                        loading="lazy" style="width: 100%; max-height: 200px; object-fit: cover; border-radius: var(--radio-sm); margin-bottom: 0.6rem;">
+                    <div class="promo-contenido">
+                        <span class="promo-badge" style="font-size: 0.75rem; font-weight: 700; background: var(--color-salvia-light); color: var(--color-salvia); padding: 0.2rem 0.6rem; border-radius: var(--radio-pill); display: inline-block; margin-bottom: 0.4rem;">🌸 Colección Algodón</span>
+                        <h3>Poleras de algodón (Blanco y Kaki)</h3>
+                        <p>100% algodón suave y resistente. Talla M en blanco y tallas M y L en color kaki. Precio especial por compras a partir de media docena.</p>
+                    </div>
+                </article>
 
-            <!-- Componente interactivo jQuery (Día 11: .delay(), .each(), .fadeIn()) -->
+                <article class="promo-tarjeta">
+                    <img src="imagenes/pantalon-lana.jpg" alt="Pantalón de tejido de lana abrigado"
+                        loading="lazy" style="width: 100%; max-height: 200px; object-fit: cover; border-radius: var(--radio-sm); margin-bottom: 0.6rem;">
+                    <div class="promo-contenido">
+                        <span class="promo-badge" style="font-size: 0.75rem; font-weight: 700; background: var(--color-acento-light); color: var(--color-acento); padding: 0.2rem 0.6rem; border-radius: var(--radio-pill); display: inline-block; margin-bottom: 0.4rem;">🔥 Variedad de Tallas y Colores</span>
+                        <h3>Pantalón de lana (Tallas S a XL)</h3>
+                        <p>Prenda térmica abrigada en tallas S, M, L y XL. Disponible en colores Azul, Negro, Café y Plomo para combatir el frío paceño.</p>
+                    </div>
+                </article>
+            </div>
+
+            <!-- Beneficios destacados de compra y avisos escalonados jQuery -->
             <div>
                 <button type="button" id="mostrar-avisos">Ver avisos de temporada</button>
                 <ul id="avisos">
-                    <li>🌸 <strong>Temporada de Primavera:</strong> Nuevos modelos de poleras con estampados exclusivos
-                        disponibles.</li>
-                    <li>🔥 <strong>Oferta Mayorista:</strong> A partir de 6 prendas mixtas obtén 15% de descuento
-                        directo en caja.</li>
-                    <li>🚚 <strong>Envíos Locales:</strong> Entregas rápidas y seguras coordinadas vía WhatsApp en toda
-                        La Paz y El Alto.</li>
+                    <li>🌸 <strong>Poleras de Algodón:</strong> Disponibles en color blanco (talla M) y kaki (tallas M y L) con tejido suave y transpirable.</li>
+                    <li>🔥 <strong>Pantalones de Lana:</strong> Stock completo en tallas S, M, L y XL en colores Azul, Negro, Café y Plomo.</li>
+                    <li>🚚 <strong>Oferta Mayorista:</strong> A partir de 6 prendas mixtas obtén 15% de descuento directo en tu bandeja.</li>
                 </ul>
             </div>
         </section>
@@ -143,676 +149,541 @@
             <h2>Preguntas frecuentes y compras</h2>
             <p>Toca cada pregunta para desplegar los detalles:</p>
 
-            =======
-            <h1>Angelica Boutique</h1>
-            <p>Venta de ropa nueva por mayor y menor en la ciudad de La Paz.</p>
-            </div>
-
-            <!-- Botón para pantallas pequeñas -->
-            <button id="menu-toggle" aria-expanded="false" class="btn-menu">☰ Menú</button>
-
-            <!-- Navegación de escritorio -->
-            <nav class="nav-escritorio" aria-label="Navegación principal">
-                <ul>
-                    <li><a href="#Catalogo">Catálogo</a></li>
-                    <li><a href="#Promociones">Promociones</a></li>
-                    <li><a href="#panel">Preguntas</a></li>
-                    <li><a href="#Horarios">Horarios</a></li>
-                    <li><a href="#Pedido">Pedidos</a></li>
-                    <li><a href="#Ubicacion">Ubicación</a></li>
-                    <li><a href="#Contactos">Contactos</a></li>
-                </ul>
-            </nav>
-
-            <!-- Menú desplegable para móviles manejado con jQuery -->
-            <nav id="menu-movil" aria-label="Navegación móvil">
-                <ul>
-                    <li><a href="#Catalogo">Catálogo</a></li>
-                    <li><a href="#Promociones">Promociones</a></li>
-                    <li><a href="#panel">Preguntas Frecuentes</a></li>
-                    <li><a href="#Horarios">Horarios y Precios</a></li>
-                    <li><a href="#Pedido">Hacer Pedido</a></li>
-                    <li><a href="#Ubicacion">Ubicación</a></li>
-                    <li><a href="#Contactos">Contactos</a></li>
-                </ul>
-            </nav>
-            </header>
-
-            <main>
-                <!-- SECCIÓN 1: CATÁLOGO DINÁMICO E INTERACTIVO -->
-                <section id="Catalogo">
-                    <h2>Nuestro Catálogo</h2>
-                    <p>Explora nuestras prendas de primera mano. Puedes buscar por nombre o filtrar por categoría:</p>
-
-                    <div class="controles">
-                        <label for="buscador" class="visualmente-oculto">Buscar prenda:</label>
-                        <input type="search" id="buscador" placeholder="🔍 Buscar prenda (ej. chompa, pijama, lana...)"
-                            autocomplete="off">
-
-                        <div id="filtros" role="group" aria-label="Filtro por categoría de ropa">
-                            <button type="button" data-categoria="todos" class="activo">Todos</button>
-                            <button type="button" data-categoria="lana">Ropa de lana</button>
-                            <button type="button" data-categoria="pijamas">Pijamas</button>
-                            <button type="button" data-categoria="poleras">Poleras</button>
-                        </div>
-                    </div>
-
-                    <p id="resultado" aria-live="polite">Cargando productos...</p>
-
-                    <!-- Contenedor donde eventos.js inyecta dinámicamente las tarjetas -->
-                    <div id="lista-productos"></div>
-                </section>
-
-                <!-- SECCIÓN 2: PROMOCIONES Y OFERTAS -->
-                <section id="Promociones">
-                    <h2>Promociones y Ofertas de Temporada</h2>
-                    <p>Aprovecha nuestros descuentos especiales en prendas seleccionadas y compras al por mayor:</p>
-
-                    <div class="promos-grid">
-                        <article class="promo-tarjeta">
-                            <img src="imagenes/polera-estampada.jpg" alt="Poleras de algodón en promoción primaveral"
-                                loading="lazy">
-                            <div class="promo-contenido">
-                                <span class="promo-badge">🌸 Primavera 2026</span>
-                                <h3>Poleras de algodón con diseño</h3>
-                                <p>Descuentos especiales en modelos livianos de primera mano. Precio especial por compra
-                                    a partir de media docena.</p>
-                            </div>
-                        </article>
-
-                        <article class="promo-tarjeta">
-                            <img src="imagenes/pantalon-lana.jpg" alt="Pantalón y buso de lana abrigada 2x1"
-                                loading="lazy">
-                            <div class="promo-contenido">
-                                <span class="promo-badge">🔥 Oferta Limitada</span>
-                                <h3>2x1 en pantalones y busos de lana</h3>
-                                <p>Prendas abrigadas de tejido fino para combatir el clima frío paceño con comodidad y
-                                    elegancia.</p>
-                            </div>
-                        </article>
-                    </div>
-
-                    <!-- Beneficios destacados de compra -->
-                    <div class="promo-beneficios">
-                        <div class="beneficio-chip">
-                            <strong>🏷️ Precios Mayoristas:</strong> 15% de descuento directo en caja a partir de 6
-                            prendas mixtas.
-                        </div>
-                        <div class="beneficio-chip">
-                            <strong>🚚 Envíos Locales y Nacionales:</strong> Entregas rápidas en La Paz y El Alto, y
-                            despachos garantizados al interior del país.
-                        </div>
-                        <div class="beneficio-chip">
-                            <strong>📲 Atención Directa:</strong> Cotizaciones inmediatas y confirmación personalizada
-                            por WhatsApp al 70124198.
-                        </div>
-                    </div>
-                </section>
-
-                <!-- SECCIÓN 3: PANEL INTERACTIVO DE PREGUNTAS (ACORDEÓN JQUERY) -->
-                <section id="panel">
-                    <h2>Preguntas frecuentes y compras</h2>
-                    <p>Toca cada pregunta para desplegar los detalles:</p>
-
-                    >>>>>>> 39c73d47d70bf0e8711bea85eb7d861bb1d3e77e
-                    <div id="acordeon">
-                        <div class="item">
-                            <button type="button" class="titulo" aria-expanded="false">¿Cómo compro ropa por
-                                mayor?</button>
-                            <div class="cuerpo">
-                                <<<<<<< HEAD <p>Para precios por mayor (a partir de 6 unidades), puedes seleccionarlas
-                                    en el formulario o
-                                    escribirnos directamente al WhatsApp. Ofrecemos descuentos progresivos para
-                                    comerciantes y
-                                    emprendedores.</p>
-                            </div>
-                        </div>
-
-                        <div class="item">
-                            <button type="button" class="titulo" aria-expanded="false">¿Qué métodos de pago tienen
-                                disponibles?</button>
-                            <div class="cuerpo">
-                                <p>Aceptamos pago simple mediante código QR de cualquier entidad bancaria de Bolivia,
-                                    efectivo
-                                    al momento de entrega o recojo en tienda, y transferencias directas.</p>
-                            </div>
-                        </div>
-
-                        <div class="item">
-                            <button type="button" class="titulo" aria-expanded="false">¿Realizan envíos al resto de
-                                Bolivia?</button>
-                            <div class="cuerpo">
-                                <p>Sí, hacemos envíos a departamentos del interior del país (Cochabamba, Santa Cruz,
-                                    Oruro,
-                                    Potosí, etc.) mediante empresas de transporte terrestre y encomienda garantizada.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- SECCIÓN 4: HORARIOS Y PRECIOS -->
-                <section id="Horarios">
-                    <h2>Horarios y Precios</h2>
-                    <article>
-                        <h3>Lunes a viernes</h3>
-                        <p>Atención continua en la mañana desde 8:00 am hasta 12:00 pm.</p>
-                    </article>
-                    <article>
-                        <h3>Sábados y domingos</h3>
-                        <p>Atención de 8:30 am hasta 12:00 pm.</p>
-                    </article>
-
-                    <table>
-                        <caption>Precios referenciales por prenda y disponibilidad</caption>
-                        <thead>
-                            <tr>
-                                <th scope="col">Producto</th>
-                                <th scope="col">Precio Base</th>
-                                <th scope="col">Disponibilidad</th>
-                                =======
-                                <p>Para precios por mayor (a partir de 6 unidades), el sistema aplica automáticamente un
-                                    15% de descuento en el pedido. También puedes escribirnos directamente a nuestro
-                                    WhatsApp para coordinar pedidos por fardos o docenas.</p>
-                                </div>
-                                </div>
-
-                                <div class="item">
-                                    <button type="button" class="titulo" aria-expanded="false">¿Qué métodos de pago
-                                        tienen disponibles?</button>
-                                    <div class="cuerpo">
-                                        <p>Aceptamos pago simple mediante código QR de cualquier entidad bancaria de
-                                            Bolivia, efectivo al momento de entrega o recojo en tienda, y transferencias
-                                            bancarias directas.</p>
-                                    </div>
-                                </div>
-
-                                <div class="item">
-                                    <button type="button" class="titulo" aria-expanded="false">¿Realizan envíos al resto
-                                        de Bolivia?</button>
-                                    <div class="cuerpo">
-                                        <p>Sí, hacemos envíos a todos los departamentos (Cochabamba, Santa Cruz, Oruro,
-                                            Potosí, Chuquisaca, Tarija, Beni y Pando) mediante empresas de transporte
-                                            terrestre y encomienda garantizada.</p>
-                                    </div>
-                                </div>
-                                </div>
-                </section>
-
-                <!-- SECCIÓN 4: HORARIOS Y ATENCIÓN -->
-                <section id="Horarios">
-                    <h2>Horarios de Atención</h2>
-                    <p>Te esperamos en nuestro local en la zona central de La Paz o mediante nuestros canales virtuales:
-                    </p>
-
-                    <table>
-                        <caption>Horario de atención en tienda física y despacho de pedidos</caption>
-                        <thead>
-                            <tr>
-                                <th scope="col">Día</th>
-                                <th scope="col">Horario Continuo</th>
-                                <th scope="col">Modalidad y Entregas</th>
-                                >>>>>>> 39c73d47d70bf0e8711bea85eb7d861bb1d3e77e
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <<<<<<< HEAD <td>Ropa de lana tejida</td>
-                                    <td>Bs 28</td>
-                                    <td>Hasta agotar stock</td>
-                            </tr>
-                            <tr>
-                                <td>Pantalón tejido de lana</td>
-                                <td>Bs 35</td>
-                                <td>Disponible</td>
-                            </tr>
-                            <tr>
-                                <td>Pijamas (conjunto 2 piezas)</td>
-                                <td>Bs 60</td>
-                                <td>Disponible</td>
-                            </tr>
-                            <tr>
-                                <td>Pijama térmica polar</td>
-                                <td>Bs 65</td>
-                                <td>Hasta agotar stock</td>
-                            </tr>
-                            <tr>
-                                <td>Poleras con diseño</td>
-                                <td>Bs 30</td>
-                                <td>Disponible</td>
-                                =======
-                                <td><strong>Lunes a Viernes</strong></td>
-                                <td>09:00 - 19:00</td>
-                                <td>Atención en tienda y entregas coordinadas</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Sábados</strong></td>
-                                <td>09:00 - 16:00</td>
-                                <td>Atención en tienda y despacho a departamentos</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Domingos</strong></td>
-                                <td>10:00 - 14:00</td>
-                                <td>Atención personalizada y pedidos por WhatsApp</td>
-                                >>>>>>> 39c73d47d70bf0e8711bea85eb7d861bb1d3e77e
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <figure>
-                        <img src="tienda.png" alt="Instalaciones y atención de Angelica Boutique en La Paz" width="600"
-                            height="400">
-                        <figcaption>Angelica Boutique: Prendas de primera mano en La Paz.</figcaption>
-                    </figure>
-                </section>
-
-                <!-- SECCIÓN 5: FORMULARIO DE PEDIDO -->
-                <section id="Pedido">
-                    <h2>Hacer un Pedido</h2>
-                    <<<<<<< HEAD <p>Elige tu prenda o haz clic en "Pedir esta prenda" en cualquier tarjeta del catálogo
-                        para cargarla
-                        automáticamente:</p>
-                        =======
-                        <p>Elige tu prenda o haz clic en <strong>"Pedir esta prenda"</strong> en cualquier tarjeta del
-                            catálogo para cargarla automáticamente:</p>
-                        >>>>>>> 39c73d47d70bf0e8711bea85eb7d861bb1d3e77e
-
-                        <form action="/Pedido" method="post" novalidate>
-                            <fieldset>
-                                <legend>Tus datos de contacto</legend>
-
-                                <p>
-                                    <label for="nombre">Nombre completo</label>
-                                    <input type="text" id="nombre" name="nombre" autocomplete="name" required
-                                        placeholder="Ej. Juan Pérez">
-                                </p>
-
-                                <p>
-                                    <label for="email">Correo electrónico</label>
-                                    <input type="email" id="email" name="email" autocomplete="email" required
-                                        placeholder="ejemplo@correo.com">
-                                </p>
-
-                                <p>
-                                    <label for="telefono">Teléfono (WhatsApp)</label>
-                                    <input type="tel" id="telefono" name="telefono" autocomplete="tel"
-                                        pattern="[0-9]{7,8}" title="Ingresa 7 u 8 dígitos sin espacios" required
-                                        placeholder="Ej. 70124198">
-                                </p>
-                            </fieldset>
-
-                            <fieldset>
-                                <legend>Detalle de tu prenda</legend>
-
-                                <p>
-                                    <label for="producto">Prenda deseada</label>
-                                    <select id="producto" name="producto" required>
-                                        <<<<<<< HEAD <option value="">-- Elige una prenda --</option>
-                                            <option value="Chompa de lana tejida">Chompa de lana tejida (Bs 28)</option>
-                                            <option value="Pantalón tejido de lana">Pantalón tejido de lana (Bs 35)
-                                            </option>
-                                            <option value="Pijama conjunto 2 piezas">Pijama conjunto 2 piezas (Bs 60)
-                                            </option>
-                                            <option value="Pijama térmica afelpada">Pijama térmica afelpada (Bs 65)
-                                            </option>
-                                            <option value="Polera diseño primavera">Polera diseño primavera (Bs 30)
-                                            </option>
-                                            <option value="Polera básica algodón">Polera básica algodón (Bs 25)</option>
-                                            =======
-                                            <option value="">-- Elige una prenda del catálogo --</option>
-                                            >>>>>>> 39c73d47d70bf0e8711bea85eb7d861bb1d3e77e
-                                    </select>
-                                </p>
-
-                                <p>
-                                    <label for="cantidad">Cantidad de unidades</label>
-                                    <input type="number" id="cantidad" name="cantidad" min="1" max="100" value="1"
-                                        required>
-                                </p>
-
-                                <p>
-                                    <label for="fecha">Fecha solicitada de entrega o recojo</label>
-                                    <input type="date" id="fecha" name="fecha" required>
-                                </p>
-
-                                <p>
-                                    <label for="notas">Indicaciones adicionales (tallas, colores preferidos,
-                                        etc.)</label>
-                                    <textarea id="notas" name="notas" rows="3"
-                                        placeholder="Ej. Talla M, color azul marino..."></textarea>
-                                </p>
-
-                                <p>
-                                    <input type="checkbox" id="terminos" name="terminos" required>
-                                    <<<<<<< HEAD <label for="terminos" style="display:inline; font-weight:normal;">
-                                        Acepto que el pedido se
-                                        confirma y coordina por WhatsApp o llamada telefónica.</label>
-                                </p>
-                            </fieldset>
-
-                            <button type="submit">Enviar mi pedido</button>
-                        </form>
-                </section>
-
-                <!-- SECCIÓN 6: UBICACIÓN Y GEOLOCALIZACIÓN (preferencias.js) -->
-                <section id="Ubicacion">
-                    <h2>Ubicación y Distancia en Vivo</h2>
-                    <article class="tarjeta-ubicacion">
-                        <div class="ubicacion-cabecera">
-                            <div>
-                                <h3>📍 Tienda Física Angelica Boutique</h3>
-                                <p class="ubicacion-direccion">Av. Principal 145, La Paz - Bolivia (Atención presencial
-                                    y
-                                    vestidores cómodos).</p>
-                            </div>
-                        </div>
-
-                        <div class="controles-ubicacion">
-                            <button type="button" id="ubicarme" class="btn-ubicarme">
-                                <span class="icono-radar" aria-hidden="true">🎯</span>
-                                <span>Calcular mi distancia ahora</span>
-                            </button>
-                            <a href="https://maps.app.goo.gl/zS3h2XczvwezXcsA6" target="_blank"
-                                rel="noopener noreferrer" class="btn-maps" id="enlace-tienda-maps">
-                                🗺️ Ver tienda en Google Maps
-                            </a>
-                            <a href="#" target="_blank" rel="noopener noreferrer" class="btn-ruta" id="ver-ruta"
-                                style="display: none;">
-                                🚗 Cómo llegar en Google Maps
-                            </a>
-                        </div>
-
-                        <!-- Panel interactivo de resultados de cálculo en tiempo real -->
-                        <div id="panel-distancia" class="panel-distancia-resultado" style="display: none;">
-                            <div class="distancia-hero">
-                                <div class="distancia-numero-caja">
-                                    <span class="distancia-valor" id="distancia-km">--</span>
-                                    <span class="distancia-unidad" id="distancia-unidad">km</span>
-                                </div>
-                                <div class="distancia-resumen">
-                                    <h4 id="distancia-titulo">Distancia calculada</h4>
-                                    <p id="distancia-descripcion">Calculando trayecto y tiempos estimados...</p>
-                                </div>
-                            </div>
-
-                            <div class="distancia-tiempos-grid">
-                                <div class="tiempo-card">
-                                    <span class="tiempo-icono">🚶</span>
-                                    <div class="tiempo-info">
-                                        <strong>A pie</strong>
-                                        <span id="tiempo-caminando">--</span>
-                                    </div>
-                                </div>
-                                <div class="tiempo-card">
-                                    <span class="tiempo-icono">🚗</span>
-                                    <div class="tiempo-info">
-                                        <strong>En vehículo / taxi</strong>
-                                        <span id="tiempo-auto">--</span>
-                                    </div>
-                                </div>
-                                <div class="tiempo-card">
-                                    <span class="tiempo-icono">📡</span>
-                                    <div class="tiempo-info">
-                                        <strong>Precisión GPS</strong>
-                                        <span id="precision-gps">±-- m</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="coordenadas-comparativa">
-                                <div class="coord-item">
-                                    <span class="coord-label">Tu ubicación actual:</span>
-                                    <code id="coord-usuario">--</code>
-                                </div>
-                                <div class="coord-item">
-                                    <span class="coord-label">Ubicación de la tienda:</span>
-                                    <code>-16.53313, -68.18673</code>
-                                </div>
-                            </div>
-                        </div>
-
-                        <p id="estado-ubicacion" role="status" aria-live="polite">
-                            Presiona el botón para calcular con el GPS de tu dispositivo la distancia exacta y el tiempo
-                            estimado de llegada a Angelica Boutique.
-                        </p>
-                    </article>
-                </section>
-
-                <!-- SECCIÓN 7: CARGA REMOTA CON FETCH Y JSON (remoto.js) -->
-                <section id="Remoto">
-                    <h2>Catálogo vía Fetch y JSON</h2>
-                    <p>Las prendas se cargan aquí directamente desde el archivo <code>datos.json</code> usando
-                        JavaScript
-                        asíncrono (<code>fetch</code> y jQuery <code>$.getJSON</code>). Esta es la base del intercambio
-                        de datos
-                        en aplicaciones web modernas.</p>
-
-                    <div class="controles-remoto">
-                        <button type="button" id="cargar-fetch">⬇ Cargar con fetch</button>
-                        <button type="button" id="cargar-jquery">⬇ Cargar con jQuery</button>
-                        <button type="button" id="cargar-roto" class="btn-roto">✖ Simular error (archivo
-                            inexistente)</button>
-                    </div>
-
-                    <!-- Indicador de estado: cargando / ok / error -->
-                    <p id="estado" role="status" aria-live="polite">Presiona un botón para cargar las prendas desde el
-                        JSON.</p>
-
-                    <!-- Contenedor donde remoto.js inyecta las tarjetas -->
-                    <div id="lista-remota"></div>
-                </section>
-
-                <!-- SECCIÓN 8: COMPARATIVA JQUERY VS VANILLA JS (jquery-comparado.js) -->
-                <section id="Comparativa">
-                    <h2>Comparativa: jQuery vs Vanilla JavaScript</h2>
-                    <p>Ambos enfoques pueden modificar el DOM, manejar eventos y aplicar estilos. El siguiente demo
-                        muestra las
-                        dos formas de hacer exactamente lo mismo:</p>
-
-                    <div class="demo-comparativa">
-                        <div class="demo-bloque">
-                            <h3>Vanilla JavaScript</h3>
-                            <p id="salida-vanilla">Párrafo controlado con Vanilla JS.</p>
-                            <button type="button" id="boton-vanilla">Resaltar con JS puro</button>
-                        </div>
-
-                        <div class="demo-bloque">
-                            <h3>jQuery</h3>
-                            <p id="salida-jquery">Párrafo controlado con jQuery.</p>
-                            <button type="button" id="boton-jquery">Resaltar con jQuery</button>
-                        </div>
-                    </div>
-                </section>
-            </main>
-
-            <!-- BARRA LATERAL -->
-            <aside>
-                <h2>¿Sabías que?</h2>
-                <p>En <strong>Angelica Boutique</strong> traemos ropa nueva de primera mano directamente de confección,
-                    garantizando calidad en cada fibra de lana y algodón.</p>
-                <p>Pregunta por nuestras promociones especiales para compras al por mayor.</p>
-            </aside>
-
-            <!-- PIE DE PÁGINA -->
-            <footer id="Contactos">
-                <h2>Contactos</h2>
-                <address>
-                    Av. Principal 145, La Paz - Bolivia<br>
-                    Teléfono y WhatsApp: <a href="tel:70124198">70124198</a>
-                </address>
-
-                <div class="redes-sociales">
-                    <h3>Nuestras Redes</h3>
-                    <div class="redes-iconos">
-                        <!-- WhatsApp -->
-                        <a href="https://wa.me/59170124198?text=Hola,%20vengo%20de%20su%20web%20y%20quiero%20consultar%20sobre%20la%20ropa"
-                            target="_blank" rel="noopener noreferrer" class="red-btn red-whatsapp" aria-label="WhatsApp"
-                            title="WhatsApp">
-                            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true">
-                                <path
-                                    d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm.01 1.67c4.56 0 8.25 3.69 8.25 8.24 0 4.56-3.69 8.25-8.25 8.25-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.55 3.69-8.24 8.25-8.24zm4.53 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.65.81-.8 1-.15.19-.29.21-.54.08-.25-.12-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.39-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.15.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.12-.56-1.35-.77-1.85-.2-.49-.41-.42-.56-.43h-.48c-.16 0-.43.06-.66.31-.23.25-.87.85-.87 2.08 0 1.22.89 2.4 1.01 2.57.13.16 1.76 2.68 4.25 3.76.6.26 1.06.41 1.42.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.14-1.19-.06-.1-.23-.16-.48-.29z" />
-                            </svg>
-                        </a>
-
-                        <!-- Instagram -->
-                        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"
-                            class="red-btn red-instagram" aria-label="Instagram" title="Instagram">
-                            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                <rect x="2.5" y="2.5" width="19" height="19" rx="5.5" ry="5.5"></rect>
-                                <circle cx="12" cy="12" r="4.2"></circle>
-                                <circle cx="17.6" cy="6.4" r="1.3" fill="currentColor" stroke="none"></circle>
-                            </svg>
-                        </a>
-
-                        <!-- Facebook -->
-                        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"
-                            class="red-btn red-facebook" aria-label="Facebook" title="Facebook">
-                            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true">
-                                <path
-                                    d="M13.5 21.5v-8.2h2.7l.4-3.2h-3.1V8.05c0-.93.26-1.57 1.6-1.57h1.7V3.62c-.3-.04-1.32-.12-2.51-.12-2.48 0-4.18 1.52-4.18 4.3v2.3H7v3.2h2.71v8.2h3.79z" />
-                            </svg>
-                        </a>
+            <div id="acordeon">
+                <div class="item">
+                    <button type="button" class="titulo" aria-expanded="false">¿Cómo compro ropa por mayor?</button>
+                    <div class="cuerpo">
+                        <p>Para precios por mayor (a partir de 6 unidades), puedes armar tu surtido en «Mi bandeja» donde se aplica automáticamente el 15% de descuento, o escribirnos directamente al WhatsApp.</p>
                     </div>
                 </div>
-                <p><small>&copy; 2026 Angelica Boutique. Todos los derechos reservados.</small></p>
-            </footer>
 
-            <!-- Botón Flotante Interactivo de WhatsApp con Animación Pulsante -->
-            <a href="https://wa.me/59170124198?text=Hola,%20vengo%20de%20su%20web%20y%20quiero%20consultar%20sobre%20la%20ropa"
-                target="_blank" rel="noopener noreferrer" class="whatsapp-flotante" aria-label="Contactar por WhatsApp">
-                <span class="whatsapp-halo"></span>
-                <span class="whatsapp-icono" aria-hidden="true">💬</span>
-                <span class="whatsapp-label">¿Consultas? Escríbenos</span>
-            </a>
+                <div class="item">
+                    <button type="button" class="titulo" aria-expanded="false">¿Qué métodos de pago tienen disponibles?</button>
+                    <div class="cuerpo">
+                        <p>Aceptamos pago simple mediante código QR de cualquier entidad bancaria de Bolivia, efectivo al momento de entrega o recojo en tienda, y transferencias bancarias directas.</p>
+                    </div>
+                </div>
 
-            <!-- ── SCRIPTS DEL PROYECTO ────────────────────────────────────────── -->
-            <!-- 1. Biblioteca jQuery 3.7.1 -->
-            <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+                <div class="item">
+                    <button type="button" class="titulo" aria-expanded="false">¿Realizan envíos al resto de Bolivia?</button>
+                    <div class="cuerpo">
+                        <p>Sí, hacemos envíos a todos los departamentos (Cochabamba, Santa Cruz, Oruro, Potosí, Chuquisaca, Tarija, Beni y Pando) mediante empresas de transporte terrestre y encomienda garantizada.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-            <!-- 2. Datos y Catálogo Oficial de Prendas (Objetos, Arreglos, Clases) -->
-            <script src="datos.js"></script>
+        <!-- SECCIÓN 4: HORARIOS Y PRECIOS -->
+        <section id="Horarios">
+            <h2>Horarios y Precios</h2>
+            <article>
+                <h3>Lunes a viernes</h3>
+                <p>Atención continua desde las 08:30 hasta las 19:00.</p>
+            </article>
+            <article>
+                <h3>Sábados y domingos</h3>
+                <p>Atención de 09:00 a 16:00 (Sábados) y 09:30 a 13:00 (Domingos).</p>
+            </article>
 
-            <!-- 3. Funciones utilitarias (Cálculos de totales, descuentos, IVA) -->
-            <script src="funciones.js"></script>
+            <table>
+                <caption>Precios referenciales por prenda y disponibilidad</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">Producto</th>
+                        <th scope="col">Detalle de Tallas y Colores</th>
+                        <th scope="col">Precio Base</th>
+                        <th scope="col">Disponibilidad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Polera de algodón Blanca</strong></td>
+                        <td>Talla M · Color Blanco</td>
+                        <td>Bs 30.00</td>
+                        <td>Disponible</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Polera de algodón Kaki</strong></td>
+                        <td>Tallas M y L · Color Kaki</td>
+                        <td>Bs 30.00</td>
+                        <td>Disponible</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Pantalón de lana</strong></td>
+                        <td>Tallas S, M, L, XL · Azul, Negro, Café, Plomo</td>
+                        <td>Bs 35.00</td>
+                        <td>Disponible</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Chompa de lana tejida</strong></td>
+                        <td>Talla M / L · Azul, Café, Vino</td>
+                        <td>Bs 28.00</td>
+                        <td>Disponible</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Pijamas (conjunto 2 piezas)</strong></td>
+                        <td>Talla Estándar · Rosa, Azul Pastel</td>
+                        <td>Bs 60.00</td>
+                        <td>Disponible</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Pijama térmica afelpada</strong></td>
+                        <td>Talla M / L · Gris, Azul Noche</td>
+                        <td>Bs 65.00</td>
+                        <td>Hasta agotar stock</td>
+                    </tr>
+                </tbody>
+            </table>
 
-            <!-- 4. Lógica de inicio y constantes de tienda -->
-            <script src="app.js"></script>
+            <figure>
+                <img src="tienda.png" alt="Instalaciones y atención de Angelica Boutique en La Paz" width="600"
+                    height="400">
+                <figcaption>Angelica Boutique: Prendas de primera mano en La Paz.</figcaption>
+            </figure>
+        </section>
 
-            <!-- 5. Eventos del DOM (Filtros interactivos, renderizado y validación de formulario) -->
-            <script src="eventos.js"></script>
+        <!-- ── SECCIÓN 5 (DÍA 14 FUSIONADO CON CARRITO DE BANDEJA Y DESCUENTOS): ARMA TU SURTIDO ──── -->
+        <section id="tablero-zona">
+            <div class="surtido-cabecera-premium">
+                <div>
+                    <span class="surtido-pill">🛍️ Experiencia Interactiva · Hasta 12 Prendas</span>
+                    <h2>Arma tu surtido</h2>
+                    <p class="tablero-intro">
+                        Arrastra las prendas a tu carrito de bandeja, o usa el botón «Agregar».<br>
+                        Caben 12 prendas y se guarda aunque cierres la página. A partir de 6 prendas obtienes <strong>15% de descuento mayorista automático</strong>.
+                    </p>
+                </div>
+            </div>
 
-            <!-- 6. Componentes interactivos jQuery (Menú móvil, acordeón y efectos escalonados) -->
-            <script src="jquery-panel.js"></script>
+            <!-- Barra de progreso interactiva de la bandeja (0 a 12 prendas con hito en 6 prendas = -15%) -->
+            <div class="bandeja-progreso-contenedor">
+                <div class="bandeja-progreso-info">
+                    <span id="surtido-banner-descuento" role="status" aria-live="polite">
+                        💡 Lleva 6 o más prendas en tu bandeja y obtén 15% de descuento mayorista automático.
+                    </span>
+                    <strong id="bandeja-contador-progreso" class="bandeja-chip-progreso">0 / 12 prendas</strong>
+                </div>
+                <div class="bandeja-barra-pista" aria-hidden="true">
+                    <div id="bandeja-barra-relleno" class="bandeja-barra-relleno" style="width: 0%;"></div>
+                    <div class="bandeja-hito-mayorista" title="Desde 6 prendas: 15% de descuento mayorista">
+                        <span>🏷️ 6 u. (-15%)</span>
+                    </div>
+                </div>
 
-            <!-- 7. Carga remota con fetch/AJAX y jQuery.getJSON (Día 12) -->
-            <script src="remoto.js"></script>
+                <!-- Caja visual interactiva de 12 casillas (Carrito de Bandeja visual) -->
+                <div id="bandeja-slots-visuales" class="bandeja-slots-grid" aria-label="Casillas visuales de tu bandeja de 12 prendas"></div>
+            </div>
 
-            <!-- 8. Preferencias persistentes (localStorage) y Geolocalización (Día 13) -->
-            <script src="preferencias.js"></script>
+            <div id="tablero" class="tablero-surtido">
+                <!-- Columna izquierda: Prendas de hoy -->
+                <div class="columna" data-columna="disponibles">
+                    <div class="columna-encabezado">
+                        <h3>✨ Prendas de hoy</h3>
+                        <span class="columna-sub">Arrastra o pulsa «Agregar»</span>
+                    </div>
+                    <ul class="lista-columna" id="lista-disponibles"></ul>
+                    <p class="total" id="total-disponibles"></p>
+                </div>
 
-            <!-- 9. Comparativa didáctica Vanilla JS vs jQuery -->
-            <script src="jquery-comparado.js"></script>
-</body>
+                <!-- Columna derecha: Mi Carrito de Bandeja -->
+                <div class="columna columna-bandeja-destacada" data-columna="bandeja">
+                    <div class="columna-encabezado">
+                        <h3>🛍️ Mi bandeja</h3>
+                        <span class="columna-sub" id="total-bandeja">0 de 12 prendas</span>
+                    </div>
+                    <ul class="lista-columna" id="lista-bandeja"></ul>
 
-=======
-<label for="terminos" style="display:inline; font-weight:normal;">Acepto que el pedido se confirma y coordina por
-    WhatsApp o llamada telefónica.</label>
-</p>
-</fieldset>
+                    <!-- Consejo de Estilo inteligente según lo que agregues a tu bandeja -->
+                    <div id="surtido-consejo-box" class="drawer-asesor-card" style="margin-top: 0.85rem;">
+                        <div class="asesor-encabezado">
+                            <span class="asesor-insignia" id="surtido-consejo-titulo">🧣 Consejo de Angelica Boutique</span>
+                            <button type="button" id="surtido-otro-consejo" class="btn-asesor-refresh">💡 Otro tip</button>
+                        </div>
+                        <p id="surtido-consejo-texto" class="asesor-mensaje">
+                            Combina nuestras poleras 100% algodón (Blanca o Kaki) con el pantalón de lana térmico para estar cómodo todo el día en La Paz.
+                        </p>
+                        <button type="button" id="surtido-btn-sugerido" class="btn-drawer-sugerencia" hidden>
+                            ➕ Agregar prenda recomendada
+                        </button>
+                    </div>
 
-<!-- Resumen interactivo en vivo con cálculo de total y descuentos -->
-<div id="resumen-pedido" class="resumen-pedido-card" aria-live="polite">
-    <!-- Inyectado dinámicamente por eventos.js -->
-</div>
+                    <!-- Desglose de Subtotal, Descuento Mayorista (15%) y Precio Total -->
+                    <div class="surtido-resumen-financiero">
+                        <div class="resumen-fila">
+                            <span>Subtotal bandeja:</span>
+                            <strong id="surtido-subtotal">Bs 0.00</strong>
+                        </div>
+                        <div class="resumen-fila descuento" id="surtido-descuento-fila" style="display: none;">
+                            <span>Descuento mayorista (15%):</span>
+                            <strong id="surtido-descuento">- Bs 0.00</strong>
+                        </div>
+                        <div class="resumen-fila total-final">
+                            <span>Precio Total a Pagar:</span>
+                            <strong id="surtido-total" class="precio-total-grande">Bs 0.00</strong>
+                        </div>
 
-<div class="botones-formulario">
-    <button type="submit" id="btn-enviar-pedido">Confirmar Pedido</button>
-    <button type="button" id="btn-whatsapp-directo" class="btn-whatsapp">
-        <span>📲 Pedir directo por WhatsApp</span>
-    </button>
-</div>
-</form>
-</section>
+                        <div class="carrito-acciones-finales">
+                            <button type="button" id="surtido-pasar-pedido" class="btn-carrito-principal">
+                                📋 Pasar mi bandeja al Formulario de Pedido
+                            </button>
+                            <a href="#tablero-zona" target="_blank" rel="noopener noreferrer" id="surtido-whatsapp" class="btn-carrito-whatsapp deshabilitado">
+                                💬 Enviar mi bandeja por WhatsApp
+                            </a>
+                            <button type="button" id="surtido-vaciar" class="btn-carrito-vaciar">
+                                🗑️ Vaciar mi bandeja
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-<!-- SECCIÓN 6: UBICACIÓN -->
-<section id="Ubicacion">
-    <h2>Ubicación</h2>
-    <article>
-        <h3>Nos encontramos en la ciudad de La Paz</h3>
-        <p>Av. Principal 145, zona central. Atendemos con atención personalizada y vestidores cómodos.</p>
-    </article>
-</section>
-</main>
+            <canvas id="grafico" width="600" height="220">
+                Gráfico de las prendas seleccionadas en tu bandeja. Los valores están indicados en el texto de la columna.
+            </canvas>
+        </section>
 
-<!-- BARRA LATERAL -->
-<aside>
-    <h2>¿Sabías que?</h2>
-    <p>En <strong>Angelica Boutique</strong> traemos ropa nueva de primera mano directamente de confección,
-        garantizando calidad en cada fibra de lana y algodón.</p>
-    <p>Pregunta por nuestras promociones especiales para compras al por mayor.</p>
-</aside>
+        <!-- SECCIÓN 6: FORMULARIO DE PEDIDO -->
+        <section id="Pedido">
+            <h2>Hacer un Pedido</h2>
+            <p>Elige tu prenda o usa el botón <strong>«Pasar mi bandeja al Formulario de Pedido»</strong> en <em>Arma tu surtido</em> para cargar todo tu paquete con descuento:</p>
 
-<!-- PIE DE PÁGINA -->
-<footer id="Contactos">
-    <h2>Contactos</h2>
-    <address>
-        Av. Principal 145, La Paz - Bolivia<br>
-        Teléfono y WhatsApp: <a href="tel:70124198">70124198</a>
-    </address>
+            <form action="/Pedido" method="post" novalidate>
+                <fieldset>
+                    <legend>Tus datos de contacto</legend>
 
-    <div class="redes-sociales">
-        <h3>Redes sociales</h3>
-        <div class="redes-iconos">
-            <a href="https://wa.me/59170124198?text=Hola,%20vengo%20de%20su%20web%20y%20quiero%20consultar%20sobre%20la%20ropa"
-                target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="red-icono">
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
-                    <path
-                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-                </svg>
-            </a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram"
-                class="red-icono">
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
-                    <path
-                        d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-                </svg>
-            </a>
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook"
-                class="red-icono">
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
-                    <path
-                        d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-                </svg>
-            </a>
+                    <p>
+                        <label for="nombre">Nombre completo</label>
+                        <input type="text" id="nombre" name="nombre" autocomplete="name" required
+                            placeholder="Ej. Juan Pérez">
+                    </p>
+
+                    <p>
+                        <label for="email">Correo electrónico</label>
+                        <input type="email" id="email" name="email" autocomplete="email" required
+                            placeholder="ejemplo@correo.com">
+                    </p>
+
+                    <p>
+                        <label for="telefono">Teléfono (WhatsApp)</label>
+                        <input type="tel" id="telefono" name="telefono" autocomplete="tel"
+                            pattern="[0-9]{7,8}" title="Ingresa 7 u 8 dígitos sin espacios" required
+                            placeholder="Ej. 70124198">
+                    </p>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Detalle de tu prenda o bandeja</legend>
+
+                    <p>
+                        <label for="producto">Prenda deseada</label>
+                        <select id="producto" name="producto" required>
+                            <option value="">-- Elige una prenda del catálogo --</option>
+                            <option value="Polera de algodón Blanca">Polera de algodón Blanca - Talla M (Bs 30)</option>
+                            <option value="Polera de algodón Kaki">Polera de algodón Kaki - Tallas M y L (Bs 30)</option>
+                            <option value="Pantalón de lana">Pantalón de lana - Tallas S, M, L, XL (Azul, Negro, Café, Plomo) (Bs 35)</option>
+                            <option value="Chompa de lana tejida">Chompa de lana tejida (Bs 28)</option>
+                            <option value="Pijama conjunto 2 piezas">Pijama conjunto 2 piezas (Bs 60)</option>
+                            <option value="Pijama térmica afelpada">Pijama térmica afelpada (Bs 65)</option>
+                            <option value="Pijama camisón liviano">Pijama camisón liviano (Bs 45)</option>
+                        </select>
+                    </p>
+
+                    <p>
+                        <label for="cantidad">Cantidad de unidades</label>
+                        <input type="number" id="cantidad" name="cantidad" min="1" max="100" value="1" required>
+                    </p>
+
+                    <p>
+                        <label for="fecha">Fecha solicitada de entrega o recojo</label>
+                        <input type="date" id="fecha" name="fecha" required>
+                    </p>
+
+                    <p>
+                        <label for="notas">Indicaciones adicionales (especifica talla y color elegido, ej. Pantalón talla L color Negro)</label>
+                        <textarea id="notas" name="notas" rows="3"
+                            placeholder="Ej. Pantalón de lana talla L color Negro, o Polera Kaki talla M..."></textarea>
+                    </p>
+
+                    <p>
+                        <input type="checkbox" id="terminos" name="terminos" required>
+                        <label for="terminos" style="display:inline; font-weight:normal;">Acepto que el pedido se confirma y coordina por WhatsApp o llamada telefónica.</label>
+                    </p>
+                </fieldset>
+
+                <div class="botones-formulario">
+                    <button type="submit" id="btn-enviar-pedido">Confirmar Pedido</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- SECCIÓN 7: UBICACIÓN Y GEOLOCALIZACIÓN (preferencias.js) -->
+        <section id="Ubicacion">
+            <h2>Ubicación y Distancia en Vivo</h2>
+            <article class="tarjeta-ubicacion">
+                <div class="ubicacion-cabecera">
+                    <div>
+                        <h3>📍 Tienda Física Angelica Boutique</h3>
+                        <p class="ubicacion-direccion">Av. Principal 145, La Paz - Bolivia (Atención presencial y vestidores cómodos).</p>
+                    </div>
+                </div>
+
+                <div class="controles-ubicacion">
+                    <button type="button" id="ubicarme" class="btn-ubicarme">
+                        <span class="icono-radar" aria-hidden="true">🎯</span>
+                        <span>Calcular mi distancia ahora</span>
+                    </button>
+                    <a href="https://maps.app.goo.gl/zS3h2XczvwezXcsA6" target="_blank"
+                        rel="noopener noreferrer" class="btn-maps" id="enlace-tienda-maps">
+                        🗺️ Ver tienda en Google Maps
+                    </a>
+                    <a href="#" target="_blank" rel="noopener noreferrer" class="btn-ruta" id="ver-ruta"
+                        style="display: none;">
+                        🚗 Cómo llegar en Google Maps
+                    </a>
+                </div>
+
+                <div id="panel-distancia" class="panel-distancia-resultado" style="display: none;">
+                    <div class="distancia-hero">
+                        <div class="distancia-numero-caja">
+                            <span class="distancia-valor" id="distancia-km">--</span>
+                            <span class="distancia-unidad" id="distancia-unidad">km</span>
+                        </div>
+                        <div class="distancia-resumen">
+                            <h4 id="distancia-titulo">Distancia calculada</h4>
+                            <p id="distancia-descripcion">Calculando trayecto y tiempos estimados...</p>
+                        </div>
+                    </div>
+
+                    <div class="distancia-tiempos-grid">
+                        <div class="tiempo-card">
+                            <span class="tiempo-icono">🚶</span>
+                            <div class="tiempo-info">
+                                <strong>A pie</strong>
+                                <span id="tiempo-caminando">--</span>
+                            </div>
+                        </div>
+                        <div class="tiempo-card">
+                            <span class="tiempo-icono">🚗</span>
+                            <div class="tiempo-info">
+                                <strong>En vehículo / taxi</strong>
+                                <span id="tiempo-auto">--</span>
+                            </div>
+                        </div>
+                        <div class="tiempo-card">
+                            <span class="tiempo-icono">📡</span>
+                            <div class="tiempo-info">
+                                <strong>Precisión GPS</strong>
+                                <span id="precision-gps">±-- m</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="coordenadas-comparativa">
+                        <div class="coord-item">
+                            <span class="coord-label">Tu ubicación actual:</span>
+                            <code id="coord-usuario">--</code>
+                        </div>
+                        <div class="coord-item">
+                            <span class="coord-label">Ubicación de la tienda:</span>
+                            <code>-16.53313, -68.18673</code>
+                        </div>
+                    </div>
+                </div>
+
+                <p id="estado-ubicacion" role="status" aria-live="polite">
+                    Presiona el botón para calcular con el GPS de tu dispositivo la distancia exacta y el tiempo
+                    estimado de llegada a Angelica Boutique.
+                </p>
+            </article>
+        </section>
+
+        <!-- SECCIÓN 8: CARGA REMOTA CON FETCH Y JSON (remoto.js) -->
+        <section id="CatalogoOnline">
+            <h2>Inventario en Línea y Disponibilidad</h2>
+            <p>Comprueba en tiempo real la disponibilidad de prendas directamente conectada con nuestra base de datos de almacén central:</p>
+
+            <div class="controles-remoto">
+                <button type="button" id="cargar-fetch">🔄 Consultar stock disponible</button>
+                <button type="button" id="cargar-jquery">⚡ Actualizar catálogo rápido</button>
+                <button type="button" id="cargar-roto" class="btn-roto">⚠️ Probar modo sin conexión</button>
+            </div>
+
+            <p id="estado" role="status" aria-live="polite">Haz clic en "Consultar stock disponible" para sincronizar las prendas en tiempo real.</p>
+
+            <div id="lista-remota"></div>
+        </section>
+
+        <!-- SECCIÓN 9: CALIDAD Y COMPROMISO BOUTIQUE (jquery-comparado.js) -->
+        <section id="GarantiaCalidad">
+            <h2>Calidad y Confección Garantizada</h2>
+            <p>En Angelica Boutique cuidamos cada detalle en nuestras prendas nuevas. Haz clic en cada tarjeta para comprobar nuestras ventajas:</p>
+
+            <div class="demo-comparativa">
+                <div class="demo-bloque">
+                    <h3>Garantía de Tejido</h3>
+                    <p id="salida-vanilla">Prendas de lana tejida y algodón 100% hipoalergénicas, suaves al tacto y resistentes al frío andino.</p>
+                    <button type="button" id="boton-vanilla">✨ Destacar beneficio</button>
+                </div>
+
+                <div class="demo-bloque">
+                    <h3>Precios de Mayorista</h3>
+                    <p id="salida-jquery">Ahorra hasta un 15% adquiriendo desde media docena de prendas variadas con entrega inmediata en La Paz.</p>
+                    <button type="button" id="boton-jquery">🏷️ Ver condiciones</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- BARRA LATERAL -->
+    <aside>
+        <h2>¿Sabías que?</h2>
+        <p>En <strong>Angelica Boutique</strong> traemos ropa nueva de primera mano directamente de confección,
+            garantizando calidad en cada fibra de lana y algodón.</p>
+        <p>Pregunta por nuestras promociones especiales para compras al por mayor.</p>
+    </aside>
+
+    <!-- PIE DE PÁGINA -->
+    <footer id="Contactos">
+        <h2>Contactos</h2>
+        <address>
+            Av. Principal 145, La Paz - Bolivia<br>
+            Teléfono y WhatsApp: <a href="tel:70124198">70124198</a>
+        </address>
+
+        <div class="redes-sociales">
+            <h3>Nuestras Redes</h3>
+            <div class="redes-iconos">
+                <!-- WhatsApp -->
+                <a href="https://wa.me/59170124198?text=Hola,%20vengo%20de%20su%20web%20y%20quiero%20consultar%20sobre%20la%20ropa"
+                    target="_blank" rel="noopener noreferrer" class="red-btn red-whatsapp" aria-label="WhatsApp"
+                    title="WhatsApp">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true">
+                        <path
+                            d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm.01 1.67c4.56 0 8.25 3.69 8.25 8.24 0 4.56-3.69 8.25-8.25 8.25-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.55 3.69-8.24 8.25-8.24zm4.53 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.65.81-.8 1-.15.19-.29.21-.54.08-.25-.12-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.39-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.15.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.12-.56-1.35-.77-1.85-.2-.49-.41-.42-.56-.43h-.48c-.16 0-.43.06-.66.31-.23.25-.87.85-.87 2.08 0 1.22.89 2.4 1.01 2.57.13.16 1.76 2.68 4.25 3.76.6.26 1.06.41 1.42.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.14-1.19-.06-.1-.23-.16-.48-.29z" />
+                    </svg>
+                </a>
+
+                <!-- Instagram -->
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"
+                    class="red-btn red-instagram" aria-label="Instagram" title="Instagram">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <rect x="2.5" y="2.5" width="19" height="19" rx="5.5" ry="5.5"></rect>
+                        <circle cx="12" cy="12" r="4.2"></circle>
+                        <circle cx="17.6" cy="6.4" r="1.3" fill="currentColor" stroke="none"></circle>
+                    </svg>
+                </a>
+
+                <!-- Facebook -->
+                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"
+                    class="red-btn red-facebook" aria-label="Facebook" title="Facebook">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true">
+                        <path
+                            d="M13.5 21.5v-8.2h2.7l.4-3.2h-3.1V8.05c0-.93.26-1.57 1.6-1.57h1.7V3.62c-.3-.04-1.32-.12-2.51-.12-2.48 0-4.18 1.52-4.18 4.3v2.3H7v3.2h2.71v8.2h3.79z" />
+                    </svg>
+                </a>
+            </div>
         </div>
+        <p><small>&copy; 2026 Angelica Boutique. Todos los derechos reservados.</small></p>
+    </footer>
+
+    <!-- CARRITO DE BANDEJA INTERACTIVO EN ESQUINA SUPERIOR DERECHA -->
+    <div id="carrito-widget-top" class="carrito-widget-top" aria-label="Carrito de bandeja interactivo y consejos de ropa">
+        <div class="carrito-top-barra">
+            <button type="button" id="btn-toggle-drawer" class="btn-carrito-top" aria-expanded="false" aria-controls="carrito-drawer">
+                <span class="carrito-icono-animado" id="carrito-icono-top" aria-hidden="true">🛍️</span>
+                <span class="carrito-top-info">
+                    <span class="carrito-top-label">Mi Bandeja</span>
+                    <strong id="carrito-total-top">Bs 0.00</strong>
+                </span>
+                <span id="carrito-contador-top" class="carrito-badge-top">0/12</span>
+            </button>
+        </div>
+
+        <!-- Zona receptora emergente cuando se arrastra una prenda del catálogo -->
+        <div id="carrito-dropzone-top" class="carrito-dropzone-top" aria-live="polite">
+            📥 Suelta aquí la prenda para agregarla a «Mi bandeja»
+        </div>
+
+        <!-- Burbuja emergente de consejos de ropa cuando el usuario agrega o arrastra una prenda -->
+        <div id="carrito-burbuja-consejo" class="carrito-burbuja-consejo" role="status" aria-live="polite" hidden>
+            <div class="burbuja-cabecera">
+                <span class="burbuja-tag" id="burbuja-titulo">✨ Consejo de Angelica Boutique</span>
+                <button type="button" id="cerrar-burbuja" class="btn-cerrar-burbuja" aria-label="Cerrar consejo">✕</button>
+            </div>
+            <p id="burbuja-texto" class="burbuja-texto">
+                Presiona o arrastra cualquier prenda a tu bandeja para recibir recomendaciones de combinación y activar tu descuento.
+            </p>
+            <div class="burbuja-acciones">
+                <button type="button" id="btn-agregar-sugerido" class="btn-burbuja-sugerido" hidden>
+                    ➕ Agregar prenda recomendada a mi bandeja
+                </button>
+                <button type="button" id="btn-abrir-carrito-burbuja" class="btn-burbuja-ver">
+                    Abrir mi bandeja →
+                </button>
+            </div>
+        </div>
+
+        <!-- Panel desplegable del Carrito de Bandeja en la esquina superior derecha -->
+        <aside id="carrito-drawer" class="carrito-drawer" aria-label="Panel interactivo de Mi bandeja" hidden>
+            <div class="drawer-cabecera">
+                <div>
+                    <h3>🛍️ Carrito de Bandeja</h3>
+                    <p id="drawer-subtitulo">Capacidad: 12 prendas · 15% OFF desde 6 u.</p>
+                </div>
+                <button type="button" id="cerrar-drawer" class="btn-cerrar-drawer" aria-label="Cerrar bandeja">✕</button>
+            </div>
+
+            <div id="drawer-slots-mini" class="drawer-slots-mini"></div>
+
+            <!-- Lista interactiva de prendas en el drawer -->
+            <div id="carrito-drawer-items" class="carrito-drawer-items"></div>
+
+            <div class="drawer-pie">
+                <div class="drawer-resumen-linea">
+                    <span>Cupo de bandeja:</span>
+                    <strong id="drawer-unidades">0 de 12 prendas</strong>
+                </div>
+                <div class="drawer-resumen-linea" id="drawer-descuento-fila" style="display: none;">
+                    <span>Descuento Mayorista (15%):</span>
+                    <strong id="drawer-descuento" class="texto-descuento">- Bs 0.00</strong>
+                </div>
+                <div class="drawer-resumen-total">
+                    <span>Precio Total:</span>
+                    <strong id="drawer-total">Bs 0.00</strong>
+                </div>
+                <div class="drawer-botones">
+                    <button type="button" id="drawer-ir-pedido" class="btn-drawer-principal">
+                        📋 Pasar al Formulario de Pedido
+                    </button>
+                    <a href="#tablero-zona" id="drawer-ir-tablero" class="btn-burbuja-otro" style="text-align: center; text-decoration: none; padding: 0.48rem;">
+                        🎛️ Ver Tablero «Arma tu surtido»
+                    </a>
+                </div>
+            </div>
+        </aside>
     </div>
-    <p><small>&copy; 2026 Angelica Boutique. Todos los derechos reservados.</small></p>
-</footer>
 
-<!-- ── SCRIPTS DEL PROYECTO ────────────────────────────────────────── -->
-<!-- 1. Biblioteca jQuery 3.7.1 -->
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- Botón Flotante Interactivo de WhatsApp con Animación Pulsante -->
+    <a href="https://wa.me/59170124198?text=Hola,%20vengo%20de%20su%20web%20y%20quiero%20consultar%20sobre%20la%20ropa"
+        target="_blank" rel="noopener noreferrer" class="whatsapp-flotante" aria-label="Contactar por WhatsApp">
+        <span class="whatsapp-halo"></span>
+        <span class="whatsapp-icono" aria-hidden="true">💬</span>
+        <span class="whatsapp-label">¿Consultas? Escríbenos</span>
+    </a>
 
-<!-- 2. Datos y Catálogo Oficial de Prendas (Objetos, Arreglos, Clases) -->
-<script src="datos.js"></script>
-
-<!-- 3. Funciones utilitarias (Cálculos de totales, descuentos, IVA) -->
-<script src="funciones.js"></script>
-
-<!-- 4. Lógica de inicio y constantes de tienda -->
-<script src="app.js"></script>
-
-<!-- 5. Renderizado dinámico de tarjetas en el DOM (crearTarjeta, render) -->
-<script src="render.js"></script>
-
-<!-- 6. Eventos del DOM (Filtros interactivos, búsqueda y validación de formulario) -->
-<script src="eventos.js"></script>
-
-<!-- 7. Componentes interactivos jQuery (Menú móvil, acordeón y efectos escalonados) -->
-<script src="jquery-panel.js"></script>
+    <!-- ── SCRIPTS DEL PROYECTO (Arquitectura Día 14 con Surtido Fusionado) ── -->
+    <script src="jquery-3.7.1.min.js"></script>
+    <script src="app.js"></script>
+    <script src="funciones.js"></script>
+    <script src="datos.js"></script>
+    <script src="render.js"></script>
+    <script src="eventos.js"></script>
+    <script src="jquery-comparado.js"></script>
+    <script src="jquery-panel.js"></script>
+    <script src="remoto.js"></script>
+    <script src="preferencias.js"></script>
+    <script src="tablero.js"></script>
 </body>
-
->>>>>>> 39c73d47d70bf0e8711bea85eb7d861bb1d3e77e
 
 </html>

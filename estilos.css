@@ -2089,3 +2089,1923 @@ body.tema-oscuro .resaltado {
   background: hsla(44, 85%, 30%, 0.45) !important;
   color: hsl(44, 100%, 88%);
 }
+
+
+/* ═════════════════════════════════════════════════════════════════════════
+   25. DÍA 14 - EL TABLERO DRAG & DROP Y EL CANVAS (#tablero-zona, #grafico)
+   ═════════════════════════════════════════════════════════════════════════ */
+
+#tablero-zona {
+  margin-top: var(--espacio-lg);
+}
+
+#tablero {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: var(--espacio);
+  margin-bottom: var(--espacio);
+}
+
+.columna {
+  background: var(--color-superficie);
+  border: 2px dashed var(--borde);
+  border-radius: var(--radio-lg);
+  padding: var(--espacio);
+  min-height: 11.5rem;
+  box-shadow: var(--sombra-sm);
+  transition: border-color 0.25s ease, background-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.columna h3 {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  font-size: 1.08rem;
+  color: var(--color-principal);
+  border-bottom: 1px solid var(--borde-suave);
+  padding-bottom: 0.5rem;
+}
+
+/* Clase aplicada por tablero.js mientras se arrastra una ficha por encima */
+.columna.encima {
+  border-color: var(--color-acento);
+  border-style: solid;
+  background: var(--color-acento-light);
+  transform: translateY(-2px);
+  box-shadow: var(--sombra-md);
+}
+
+.lista-columna {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--espacio);
+  min-height: 3.5rem;
+  flex-grow: 1;
+}
+
+.ficha {
+  background: var(--color-fondo);
+  border: 1px solid var(--borde);
+  border-left: 4px solid var(--color-principal);
+  border-radius: var(--radio-sm);
+  padding: 0.55rem 0.75rem;
+  margin-bottom: 0.5rem;
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.92rem;
+  font-weight: 500;
+  box-shadow: var(--sombra-xs);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+}
+
+.ficha:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--sombra-sm);
+  border-left-color: var(--color-acento);
+}
+
+.ficha:active {
+  cursor: grabbing;
+}
+
+/* Mientras se arrastra, la ficha original se atenúa */
+.ficha.arrastrando {
+  opacity: 0.4;
+}
+
+.ficha-texto {
+  flex: 1;
+}
+
+/* Botón accesible para mover fichas en pantallas táctiles o con teclado */
+.btn-mover-ficha {
+  background: var(--color-superficie);
+  color: var(--color-principal);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-xs);
+  padding: 0.15rem 0.45rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  line-height: 1.2;
+  transition: var(--trans-normal);
+  flex-shrink: 0;
+}
+
+.btn-mover-ficha:hover {
+  background: var(--color-principal);
+  color: #ffffff;
+  border-color: var(--color-principal);
+}
+
+.columna .total {
+  margin: 0;
+  padding-top: 0.5rem;
+  border-top: 1px dashed var(--borde-suave);
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--color-suave);
+}
+
+/* ⚠️ Los atributos width="600" y height="220" del HTML definen el lienzo real.
+   El CSS usa max-width: 100% y height: auto para escalar sin deformar ni verse borroso. */
+#grafico {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  background: var(--color-superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-lg);
+  box-shadow: var(--sombra-sm);
+  padding: 0.5rem;
+}
+
+
+/* ═════════════════════════════════════════════════════════════════════════
+   25. DÍA 14 - EL TABLERO DRAG & DROP Y EL CANVAS (#tablero-zona, #grafico)
+   ═════════════════════════════════════════════════════════════════════════ */
+
+#tablero-zona {
+  margin-top: var(--espacio-lg);
+}
+
+#tablero {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: var(--espacio);
+  margin-bottom: var(--espacio);
+}
+
+.columna {
+  background: var(--color-superficie);
+  border: 2px dashed var(--borde);
+  border-radius: var(--radio-lg);
+  padding: var(--espacio);
+  min-height: 11.5rem;
+  box-shadow: var(--sombra-sm);
+  transition: border-color 0.25s ease, background-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.columna h3 {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  font-size: 1.08rem;
+  color: var(--color-principal);
+  border-bottom: 1px solid var(--borde-suave);
+  padding-bottom: 0.5rem;
+}
+
+/* Clase aplicada por tablero.js mientras se arrastra una ficha por encima */
+.columna.encima {
+  border-color: var(--color-acento);
+  border-style: solid;
+  background: var(--color-acento-light);
+  transform: translateY(-2px);
+  box-shadow: var(--sombra-md);
+}
+
+.lista-columna {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--espacio);
+  min-height: 3.5rem;
+  flex-grow: 1;
+}
+
+.ficha {
+  background: var(--color-fondo);
+  border: 1px solid var(--borde);
+  border-left: 4px solid var(--color-principal);
+  border-radius: var(--radio-sm);
+  padding: 0.55rem 0.75rem;
+  margin-bottom: 0.5rem;
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.92rem;
+  font-weight: 500;
+  box-shadow: var(--sombra-xs);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+}
+
+.ficha:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--sombra-sm);
+  border-left-color: var(--color-acento);
+}
+
+.ficha:active {
+  cursor: grabbing;
+}
+
+/* Mientras se arrastra, la ficha original se atenúa */
+.ficha.arrastrando {
+  opacity: 0.4;
+}
+
+.ficha-texto {
+  flex: 1;
+}
+
+/* Botón accesible para mover fichas en pantallas táctiles o con teclado */
+.btn-mover-ficha {
+  background: var(--color-superficie);
+  color: var(--color-principal);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-xs);
+  padding: 0.15rem 0.45rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  line-height: 1.2;
+  transition: var(--trans-normal);
+  flex-shrink: 0;
+}
+
+.btn-mover-ficha:hover {
+  background: var(--color-principal);
+  color: #ffffff;
+  border-color: var(--color-principal);
+}
+
+.columna .total {
+  margin: 0;
+  padding-top: 0.5rem;
+  border-top: 1px dashed var(--borde-suave);
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--color-suave);
+}
+
+/* ⚠️ Los atributos width="600" y height="220" del HTML definen el lienzo real.
+   El CSS usa max-width: 100% y height: auto para escalar sin deformar ni verse borroso. */
+#grafico {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  background: var(--color-superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-lg);
+  box-shadow: var(--sombra-sm);
+  padding: 0.5rem;
+}
+
+
+/* ═════════════════════════════════════════════════════════════════════════
+   26. CARRITO DE COMPRAS INTERACTIVO (#Carrito, .btn-agregar-carrito)
+   ═════════════════════════════════════════════════════════════════════════ */
+
+/* Contador en barra de navegación */
+.nav-link-carrito {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.carrito-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.35rem;
+  height: 1.35rem;
+  padding: 0 0.35rem;
+  border-radius: var(--radio-pill);
+  background: rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+  font-size: 0.76rem;
+  font-weight: 800;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.25s ease;
+}
+
+.carrito-badge.activo {
+  background: var(--color-acento);
+  color: #ffffff;
+  transform: scale(1.08);
+}
+
+/* Acciones en cada tarjeta del catálogo (Agregar al carrito + Pedir directo) */
+.tarjeta-acciones {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-top: auto;
+  position: relative;
+  z-index: 1;
+}
+
+.btn-agregar-carrito {
+  background: var(--grad-principal);
+  color: #ffffff;
+  border: none;
+  padding: 0.72rem 1rem;
+  border-radius: var(--radio);
+  font-weight: 700;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: var(--trans-spring);
+  width: 100%;
+  font-family: inherit;
+  box-shadow: var(--sombra-azul);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.btn-agregar-carrito:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px -4px hsla(220, 52%, 25%, 0.38);
+}
+
+.btn-agregar-carrito:active {
+  transform: scale(0.97);
+}
+
+.btn-agregar-carrito.agregado {
+  background: var(--color-salvia);
+  box-shadow: 0 6px 18px hsla(168, 38%, 32%, 0.35);
+}
+
+.btn-seleccionar.btn-pedir-secundario {
+  background: var(--color-fondo);
+  color: var(--color-principal);
+  border: 1.5px solid var(--borde);
+  box-shadow: none;
+  padding: 0.52rem 0.9rem;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.btn-seleccionar.btn-pedir-secundario::before {
+  display: none;
+}
+
+.btn-seleccionar.btn-pedir-secundario:hover {
+  background: var(--color-principal-light);
+  border-color: var(--color-principal);
+  transform: translateY(-1px);
+  box-shadow: var(--sombra-xs);
+}
+
+/* Sección principal del Carrito */
+#Carrito {
+  background: var(--color-superficie);
+  border: 1px solid var(--borde-suave);
+  border-radius: var(--radio-xl);
+  padding: var(--espacio-lg);
+  box-shadow: var(--sombra-md);
+}
+
+.carrito-mayorista-banner {
+  background: var(--color-principal-light);
+  color: var(--color-principal);
+  border: 1px solid var(--borde);
+  border-left: 4px solid var(--color-principal);
+  padding: 0.75rem 1.1rem;
+  border-radius: var(--radio);
+  font-size: 0.92rem;
+  margin-bottom: var(--espacio);
+  transition: var(--trans-normal);
+}
+
+.carrito-mayorista-banner.progreso {
+  background: var(--color-acento-light);
+  color: var(--color-texto);
+  border-left-color: var(--color-acento);
+}
+
+.carrito-mayorista-banner.activo {
+  background: var(--color-exito-fondo);
+  color: var(--color-exito-texto);
+  border-color: var(--color-exito-borde);
+  border-left: 4px solid var(--color-salvia);
+}
+
+.carrito-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--espacio-lg);
+  align-items: start;
+}
+
+@media (min-width: 52rem) {
+  .carrito-grid {
+    grid-template-columns: 1.45fr 1fr;
+  }
+}
+
+.carrito-vacio {
+  background: var(--color-fondo);
+  border: 2px dashed var(--borde);
+  border-radius: var(--radio-lg);
+  padding: 2rem 1.5rem;
+  text-align: center;
+  margin-bottom: var(--espacio);
+}
+
+.carrito-vacio-icono {
+  font-size: 2.4rem;
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+.carrito-vacio p {
+  margin: 0.25rem auto;
+}
+
+.carrito-vacio-sub {
+  font-size: 0.9rem;
+  color: var(--color-suave);
+}
+
+/* Filas de prendas dentro del carrito */
+#carrito-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: var(--espacio);
+}
+
+.carrito-item {
+  display: grid;
+  grid-template-columns: 4.2rem 1fr auto auto auto;
+  align-items: center;
+  gap: 0.85rem;
+  background: var(--color-fondo);
+  border: 1px solid var(--borde-suave);
+  border-radius: var(--radio);
+  padding: 0.75rem 0.95rem;
+  box-shadow: var(--sombra-xs);
+  transition: var(--trans-normal);
+}
+
+.carrito-item:hover {
+  border-color: var(--borde);
+  box-shadow: var(--sombra-sm);
+}
+
+.carrito-item-img {
+  width: 4.2rem;
+  height: 4.2rem;
+  object-fit: cover;
+  border-radius: var(--radio-sm);
+  border: 1px solid var(--borde-suave);
+}
+
+.carrito-item-info h4 {
+  margin: 0 0 0.2rem;
+  font-size: 0.98rem;
+  color: var(--color-principal);
+}
+
+.carrito-item-meta {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--color-suave);
+}
+
+.carrito-item-unitario {
+  margin: 0.15rem 0 0;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--color-acento);
+}
+
+.carrito-item-controles {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: var(--color-superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-pill);
+  padding: 0.2rem 0.35rem;
+}
+
+.btn-qty {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  border: none;
+  background: var(--color-fondo);
+  color: var(--color-principal);
+  font-weight: 800;
+  font-size: 1rem;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: var(--trans-normal);
+  line-height: 1;
+}
+
+.btn-qty:hover {
+  background: var(--color-principal);
+  color: #ffffff;
+}
+
+.carrito-item-cantidad {
+  min-width: 1.6rem;
+  text-align: center;
+  font-weight: 800;
+  font-size: 0.92rem;
+}
+
+.carrito-item-subtotal {
+  text-align: right;
+  min-width: 5.2rem;
+}
+
+.carrito-item-subtotal .subtotal-etiqueta {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--color-suave);
+  text-transform: uppercase;
+}
+
+.carrito-item-subtotal strong {
+  font-size: 0.98rem;
+  color: var(--color-texto);
+  font-family: 'Outfit', sans-serif;
+}
+
+.btn-eliminar-item {
+  background: transparent;
+  color: var(--color-suave);
+  border: 1px solid transparent;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  transition: var(--trans-normal);
+}
+
+.btn-eliminar-item:hover {
+  background: hsl(0, 85%, 94%);
+  color: hsl(0, 72%, 42%);
+  border-color: hsl(0, 70%, 80%);
+}
+
+@media (max-width: 38rem) {
+  .carrito-item {
+    grid-template-columns: 3.6rem 1fr auto;
+  }
+
+  .carrito-item-controles {
+    grid-column: 2 / 3;
+    justify-self: start;
+  }
+
+  .carrito-item-subtotal {
+    grid-column: 3 / 4;
+  }
+}
+
+/* Selector rápido para agregar prendas desde el propio carrito */
+.carrito-form-rapido {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.65rem;
+  background: var(--color-fondo);
+  border: 1px solid var(--borde-suave);
+  border-radius: var(--radio);
+  padding: 0.85rem 1rem;
+}
+
+.carrito-rapido-campo {
+  flex: 1 1 14rem;
+}
+
+.carrito-rapido-campo label,
+.carrito-rapido-cant label {
+  font-size: 0.8rem;
+  margin-bottom: 0.25rem;
+  color: var(--color-suave);
+}
+
+.carrito-rapido-campo select,
+.carrito-rapido-cant input {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.88rem;
+  background: var(--color-superficie);
+}
+
+.carrito-rapido-cant {
+  width: 5.2rem;
+}
+
+.btn-rapido-agregar {
+  background: var(--grad-acento);
+  color: #ffffff;
+  border: none;
+  padding: 0.58rem 1.15rem;
+  border-radius: var(--radio);
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: var(--trans-spring);
+  font-family: inherit;
+  box-shadow: var(--sombra-acento);
+}
+
+.btn-rapido-agregar:hover {
+  transform: translateY(-2px);
+}
+
+/* Panel lateral de Resumen y Precio Total */
+.carrito-resumen-caja {
+  background: var(--color-fondo);
+  border: 1.5px solid var(--borde);
+  border-radius: var(--radio-lg);
+  padding: 1.25rem;
+  margin: 0;
+  box-shadow: var(--sombra-sm);
+}
+
+.carrito-resumen-caja::before {
+  display: none;
+}
+
+.carrito-resumen-caja h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--borde-suave);
+  font-size: 1.15rem;
+}
+
+.resumen-fila {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.65rem;
+  font-size: 0.95rem;
+  color: var(--color-suave);
+}
+
+.resumen-fila strong {
+  color: var(--color-texto);
+}
+
+.resumen-fila.descuento {
+  color: var(--color-salvia);
+  font-weight: 600;
+}
+
+.resumen-fila.descuento strong {
+  color: var(--color-salvia);
+}
+
+.resumen-fila.total-final {
+  margin-top: 0.85rem;
+  padding-top: 0.85rem;
+  border-top: 2px solid var(--borde);
+  font-size: 1.08rem;
+  font-weight: 800;
+  color: var(--color-principal);
+}
+
+.precio-total-grande {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.75rem;
+  font-weight: 900;
+  color: var(--color-acento) !important;
+  letter-spacing: -0.02em;
+}
+
+.carrito-acciones-finales {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 1.1rem;
+}
+
+.btn-carrito-principal {
+  background: var(--grad-principal);
+  color: #ffffff;
+  border: none;
+  padding: 0.78rem 1.1rem;
+  border-radius: var(--radio-pill);
+  font-weight: 700;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: var(--trans-spring);
+  font-family: inherit;
+  box-shadow: var(--sombra-azul);
+  text-align: center;
+}
+
+.btn-carrito-principal:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.btn-carrito-principal:disabled,
+.btn-carrito-vaciar:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-carrito-whatsapp {
+  background: var(--color-whatsapp);
+  color: #ffffff;
+  text-decoration: none;
+  padding: 0.72rem 1.1rem;
+  border-radius: var(--radio-pill);
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-align: center;
+  transition: var(--trans-spring);
+  display: block;
+}
+
+.btn-carrito-whatsapp:hover:not(.deshabilitado) {
+  background: var(--color-whatsapp-hover);
+  color: #ffffff;
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+.btn-carrito-whatsapp.deshabilitado {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.btn-carrito-vaciar {
+  background: transparent;
+  color: var(--color-suave);
+  border: 1px solid var(--borde);
+  padding: 0.55rem 1rem;
+  border-radius: var(--radio-pill);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: var(--trans-normal);
+  font-family: inherit;
+}
+
+.btn-carrito-vaciar:hover:not(:disabled) {
+  border-color: hsl(0, 65%, 55%);
+  color: hsl(0, 65%, 45%);
+  background: hsla(0, 80%, 95%, 0.5);
+}
+
+/* Notificación flotante (Toast) al agregar prendas */
+.carrito-toast {
+  position: fixed;
+  bottom: 5.5rem;
+  right: 1.8rem;
+  z-index: 1000;
+  background: var(--color-principal);
+  color: #ffffff;
+  padding: 0.7rem 1.2rem;
+  border-radius: var(--radio-pill);
+  font-size: 0.9rem;
+  font-weight: 700;
+  box-shadow: var(--sombra-lg);
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.carrito-toast.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* ═════════════════════════════════════════════════════════════════════════
+   27. WIDGET DE CARRITO EN ESQUINA SUPERIOR DERECHA, VUELO Y ASESOR DE ROPA
+   ═════════════════════════════════════════════════════════════════════════ */
+
+@keyframes carritoSacudida {
+  0% { transform: scale(1) rotate(0deg); }
+  20% { transform: scale(1.14) rotate(-8deg); }
+  40% { transform: scale(1.16) rotate(8deg); }
+  60% { transform: scale(1.1) rotate(-5deg); }
+  80% { transform: scale(1.05) rotate(3deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+@keyframes burbujaEntrada {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.anim-carrito-sacudir {
+  animation: carritoSacudida 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Prenda en miniatura que vuela desde el producto hasta el carrito superior derecho */
+.prenda-voladora {
+  position: fixed;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--color-superficie);
+  border: 2.5px solid var(--color-acento);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+  z-index: 2500;
+  pointer-events: none;
+  display: grid;
+  place-items: center;
+  font-size: 1.5rem;
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.55s ease;
+}
+
+/* Contenedor fijo en la esquina superior derecha */
+.carrito-widget-top {
+  position: fixed;
+  top: 0.9rem;
+  right: 1.2rem;
+  z-index: 1200;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.6rem;
+  max-width: calc(100vw - 1.6rem);
+}
+
+.carrito-top-barra {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-consejo-top {
+  background: var(--color-superficie-trans);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--color-texto);
+  border: 1.5px solid var(--borde);
+  padding: 0.5rem 0.9rem;
+  border-radius: var(--radio-pill);
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  box-shadow: var(--sombra-md);
+  transition: var(--trans-spring);
+}
+
+.btn-consejo-top:hover {
+  border-color: var(--color-acento);
+  transform: translateY(-2px);
+}
+
+.btn-carrito-top {
+  background: var(--grad-principal);
+  color: #ffffff;
+  border: 1.5px solid rgba(255, 255, 255, 0.18);
+  padding: 0.48rem 0.95rem;
+  border-radius: var(--radio-pill);
+  font-family: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.35);
+  transition: var(--trans-spring);
+}
+
+.btn-carrito-top:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.45);
+}
+
+.carrito-icono-animado {
+  font-size: 1.3rem;
+  line-height: 1;
+  display: inline-block;
+}
+
+.carrito-top-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.15;
+}
+
+.carrito-top-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  opacity: 0.88;
+}
+
+#carrito-total-top {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.carrito-badge-top {
+  background: var(--color-acento);
+  color: #ffffff;
+  min-width: 1.55rem;
+  height: 1.55rem;
+  padding: 0 0.4rem;
+  border-radius: var(--radio-pill);
+  font-size: 0.8rem;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+/* Burbuja emergente de Consejos de Ropa en la esquina superior derecha */
+.carrito-burbuja-consejo {
+  width: 21.5rem;
+  max-width: calc(100vw - 2rem);
+  background: var(--color-superficie);
+  color: var(--color-texto);
+  border: 1.5px solid var(--color-acento);
+  border-radius: var(--radio-lg);
+  padding: 0.9rem 1rem;
+  box-shadow: var(--sombra-lg);
+}
+
+.carrito-burbuja-consejo.anim-burbuja {
+  animation: burbujaEntrada 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.burbuja-cabecera {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+}
+
+.burbuja-tag {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--color-acento);
+}
+
+.btn-cerrar-burbuja {
+  background: transparent;
+  border: none;
+  color: var(--color-suave);
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 0.1rem 0.35rem;
+  border-radius: var(--radio-xs);
+}
+
+.btn-cerrar-burbuja:hover {
+  background: var(--color-fondo);
+  color: var(--color-texto);
+}
+
+.burbuja-texto {
+  font-size: 0.85rem;
+  line-height: 1.48;
+  margin: 0 0 0.65rem;
+  color: var(--color-texto);
+}
+
+.burbuja-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.btn-burbuja-sugerido {
+  width: 100%;
+  background: var(--grad-acento);
+  color: #ffffff;
+  border: none;
+  padding: 0.45rem 0.75rem;
+  border-radius: var(--radio-pill);
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: var(--trans-normal);
+}
+
+.btn-burbuja-sugerido:hover {
+  transform: translateY(-1px);
+}
+
+.btn-burbuja-otro,
+.btn-burbuja-ver {
+  background: var(--color-fondo);
+  color: var(--color-principal);
+  border: 1px solid var(--borde);
+  padding: 0.32rem 0.7rem;
+  border-radius: var(--radio-pill);
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.btn-burbuja-ver {
+  margin-left: auto;
+  background: var(--color-principal-light);
+}
+
+/* Panel desplegable (Drawer) del Carrito y Asesor en la esquina superior derecha */
+.carrito-drawer {
+  width: 24rem;
+  max-width: calc(100vw - 1.8rem);
+  max-height: calc(100vh - 5rem);
+  background: var(--color-superficie);
+  color: var(--color-texto);
+  border: 1.5px solid var(--borde);
+  border-radius: var(--radio-xl);
+  padding: 1.1rem;
+  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  overflow: hidden;
+  animation: burbujaEntrada 0.28s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.carrito-drawer[hidden],
+.carrito-burbuja-consejo[hidden] {
+  display: none !important;
+}
+
+.carrito-drawer::before {
+  display: none;
+}
+
+.drawer-cabecera {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid var(--borde-suave);
+}
+
+.drawer-cabecera h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: var(--color-principal);
+}
+
+#drawer-subtitulo {
+  margin: 0.15rem 0 0;
+  font-size: 0.78rem;
+  color: var(--color-suave);
+}
+
+.btn-cerrar-drawer {
+  background: var(--color-fondo);
+  color: var(--color-texto);
+  border: 1px solid var(--borde);
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  cursor: pointer;
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+}
+
+/* Tarjeta de Consejos de Ropa dentro del Drawer */
+.drawer-asesor-card {
+  background: var(--color-acento-light);
+  border: 1px solid var(--borde);
+  border-left: 4px solid var(--color-acento);
+  border-radius: var(--radio);
+  padding: 0.7rem 0.85rem;
+}
+
+.asesor-encabezado {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.35rem;
+}
+
+.asesor-insignia {
+  font-size: 0.76rem;
+  font-weight: 800;
+  color: var(--color-acento);
+}
+
+.btn-asesor-refresh {
+  background: var(--color-superficie);
+  color: var(--color-texto);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-pill);
+  padding: 0.15rem 0.55rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.asesor-mensaje {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--color-texto);
+}
+
+.btn-drawer-sugerencia {
+  margin-top: 0.5rem;
+  width: 100%;
+  background: var(--grad-acento);
+  color: #ffffff;
+  border: none;
+  padding: 0.42rem 0.75rem;
+  border-radius: var(--radio-pill);
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* Lista de prendas dentro del Drawer superior derecho */
+.carrito-drawer-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  overflow-y: auto;
+  max-height: 14rem;
+  padding-right: 0.2rem;
+}
+
+.drawer-vacio {
+  text-align: center;
+  padding: 1rem 0.5rem;
+  background: var(--color-fondo);
+  border-radius: var(--radio);
+  border: 1px dashed var(--borde);
+}
+
+.drawer-vacio p {
+  margin: 0.2rem 0;
+  font-size: 0.82rem;
+  color: var(--color-suave);
+}
+
+.drawer-item {
+  display: grid;
+  grid-template-columns: 2.8rem 1fr auto auto auto;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--color-fondo);
+  border: 1px solid var(--borde-suave);
+  border-radius: var(--radio-sm);
+  padding: 0.45rem 0.6rem;
+}
+
+.drawer-item-img {
+  width: 2.8rem;
+  height: 2.8rem;
+  border-radius: var(--radio-xs);
+  object-fit: cover;
+}
+
+.drawer-item-info h4 {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.2;
+  color: var(--color-texto);
+}
+
+.drawer-item-meta {
+  font-size: 0.72rem;
+  color: var(--color-suave);
+}
+
+.drawer-item-qty {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: var(--color-superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-pill);
+  padding: 0.1rem 0.25rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.btn-qty-mini {
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 50%;
+  border: none;
+  background: var(--color-fondo);
+  color: var(--color-principal);
+  font-weight: 800;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  padding: 0;
+}
+
+.btn-qty-mini:hover {
+  background: var(--color-principal);
+  color: #ffffff;
+}
+
+.drawer-item-sub {
+  font-size: 0.82rem;
+  font-family: 'Outfit', sans-serif;
+  color: var(--color-acento);
+}
+
+.btn-eliminar-mini {
+  background: transparent;
+  border: none;
+  color: var(--color-suave);
+  cursor: pointer;
+  font-size: 0.8rem;
+  padding: 0.2rem;
+}
+
+.btn-eliminar-mini:hover {
+  color: hsl(0, 72%, 50%);
+}
+
+/* Pie del Drawer con Precio Total */
+.drawer-pie {
+  border-top: 1px solid var(--borde);
+  padding-top: 0.65rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.drawer-resumen-linea {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  color: var(--color-suave);
+}
+
+.texto-descuento {
+  color: var(--color-salvia);
+}
+
+.drawer-resumen-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--color-texto);
+}
+
+#drawer-total {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.38rem;
+  font-weight: 900;
+  color: var(--color-acento);
+}
+
+.drawer-botones {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-top: 0.3rem;
+}
+
+.btn-drawer-principal {
+  background: var(--grad-principal);
+  color: #ffffff;
+  border: none;
+  padding: 0.62rem 0.9rem;
+  border-radius: var(--radio-pill);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.btn-drawer-principal:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-drawer-wa {
+  background: var(--color-whatsapp);
+  color: #ffffff;
+  text-decoration: none;
+  padding: 0.55rem 0.9rem;
+  border-radius: var(--radio-pill);
+  font-size: 0.83rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.btn-drawer-wa.deshabilitado {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Indicar que las imágenes de las tarjetas se pueden presionar para subir al carrito */
+.tarjeta-imagen img {
+  cursor: pointer;
+}
+
+@media (max-width: 42rem) {
+  .texto-asesor-corto {
+    display: none;
+  }
+  .carrito-widget-top {
+    top: 0.6rem;
+    right: 0.6rem;
+  }
+}
+
+
+/* ═════════════════════════════════════════════════════════════════════════
+   28. DRAG & DROP DE PRENDAS DEL CATÁLOGO HACIA EL CARRITO
+   ═════════════════════════════════════════════════════════════════════════ */
+
+.tarjeta[draggable="true"] {
+  cursor: grab;
+}
+
+.tarjeta[draggable="true"]:active {
+  cursor: grabbing;
+}
+
+.tarjeta.arrastrando-prenda {
+  opacity: 0.45;
+  transform: scale(0.96);
+  border-color: var(--color-acento) !important;
+}
+
+.badge-arrastrable {
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: var(--color-acento-light);
+  color: var(--color-acento);
+  padding: 0.22rem 0.65rem;
+  border-radius: var(--radio-pill);
+  border: 1px dashed var(--color-acento);
+  user-select: none;
+}
+
+/* Zona de caída permanente dentro de la sección #Carrito */
+.carrito-dropzone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.9rem 1.2rem;
+  margin-bottom: 0.85rem;
+  border: 2px dashed var(--borde);
+  border-radius: var(--radio-lg);
+  background: var(--color-fondo);
+  color: var(--color-suave);
+  font-size: 0.9rem;
+  text-align: center;
+  transition: var(--trans-normal);
+}
+
+.dropzone-icono {
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+/* Zona emergente en el carrito superior derecho cuando empieza un arrastre */
+.carrito-dropzone-top {
+  display: none;
+  background: var(--color-superficie);
+  color: var(--color-acento);
+  border: 2px dashed var(--color-acento);
+  border-radius: var(--radio-lg);
+  padding: 0.7rem 1.1rem;
+  font-size: 0.84rem;
+  font-weight: 800;
+  box-shadow: var(--sombra-lg);
+  text-align: center;
+  animation: burbujaEntrada 0.25s ease both;
+}
+
+body.arrastrando-al-carrito .carrito-dropzone-top {
+  display: block;
+}
+
+body.arrastrando-al-carrito #btn-toggle-drawer {
+  transform: scale(1.06);
+  box-shadow: 0 0 0 4px var(--color-acento-glow), 0 12px 30px rgba(0, 0, 0, 0.4);
+  border-color: var(--color-acento);
+}
+
+body.arrastrando-al-carrito .carrito-dropzone {
+  border-color: var(--color-acento);
+  color: var(--color-texto);
+  background: var(--color-acento-light);
+}
+
+/* Feedback visual cuando la prenda arrastrada pasa exactamente sobre el destino */
+.carrito-destino-activo,
+#Carrito.carrito-destino-activo .carrito-dropzone,
+#carrito-widget-top.carrito-destino-activo .carrito-dropzone-top,
+#carrito-widget-top.carrito-destino-activo #btn-toggle-drawer {
+  border-style: solid !important;
+  border-color: var(--color-acento) !important;
+  background: var(--color-acento-light);
+  transform: scale(1.03);
+  box-shadow: 0 0 0 4px var(--color-acento-glow), var(--sombra-md);
+}
+
+
+
+
+
+/* ═════════════════════════════════════════════════════════════════════════
+   29. ESTILO "ARMA TU SURTIDO" PARA EL TABLERO (#tablero-zona, .tablero-surtido)
+   ═════════════════════════════════════════════════════════════════════════ */
+
+#tablero-zona .tablero-intro {
+  font-size: 1.02rem;
+  color: var(--color-suave);
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+}
+
+#tablero.tablero-surtido {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: 1.4rem;
+  align-items: stretch;
+  margin-bottom: 1.4rem;
+}
+
+#tablero.tablero-surtido .columna {
+  background: var(--color-superficie);
+  border: 2px dashed var(--borde);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  min-height: 18rem;
+}
+
+#tablero.tablero-surtido .columna h3 {
+  font-size: 1.12rem;
+  font-weight: 800;
+  color: var(--color-texto);
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 0.9rem;
+}
+
+#tablero.tablero-surtido .ficha {
+  background: var(--color-fondo);
+  border: 1px solid var(--borde-suave);
+  border-left: 1px solid var(--borde-suave);
+  border-radius: 0.75rem;
+  padding: 0.7rem 0.95rem;
+  margin-bottom: 0.65rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05);
+  cursor: grab;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+#tablero.tablero-surtido .ficha:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px rgba(15, 23, 42, 0.09);
+  border-color: var(--borde);
+}
+
+.ficha-etiqueta {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-texto);
+  line-height: 1.35;
+}
+
+/* Botón «Agregar» cálido en la columna izquierda ("Prendas de hoy") */
+.btn-ficha-agregar {
+  background: var(--color-acento);
+  color: #ffffff !important;
+  border: none;
+  border-radius: 999px;
+  padding: 0.42rem 1.05rem;
+  font-size: 0.86rem;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: 0 3px 10px hsla(28, 70%, 40%, 0.25);
+  transition: transform 0.15s ease, filter 0.15s ease, opacity 0.15s ease;
+}
+
+.btn-ficha-agregar:hover:not(:disabled) {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+
+.btn-ficha-agregar:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Botón «Quitar» claro con borde suave en la columna derecha ("Mi bandeja") */
+.btn-ficha-quitar {
+  background: var(--color-superficie);
+  color: var(--color-texto);
+  border: 1.5px solid var(--borde);
+  border-radius: 999px;
+  padding: 0.38rem 0.95rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.btn-ficha-quitar:hover {
+  border-color: var(--color-acento);
+  color: var(--color-acento);
+  background: var(--color-acento-light);
+}
+
+.ficha-vacia {
+  padding: 2rem 1rem;
+  text-align: center;
+  color: var(--color-suave);
+  font-size: 0.92rem;
+  font-style: italic;
+}
+
+#total-bandeja.limite-alcanzado {
+  color: var(--color-acento);
+  font-weight: 800;
+}
+
+
+/* Resumen financiero con descuentos integrado dentro de "Mi bandeja" en Arma tu surtido */
+.surtido-resumen-financiero {
+  margin-top: 1rem;
+  padding-top: 0.9rem;
+  border-top: 1.5px dashed var(--borde);
+}
+
+
+/* ═════════════════════════════════════════════════════════════════════════
+   30. CARRITO DE BANDEJA INTERACTIVO (12 CASILLAS VISUALES + FICHAS RICAS)
+   ═════════════════════════════════════════════════════════════════════════ */
+
+.surtido-pill {
+  display: inline-block;
+  background: var(--color-acento-light);
+  color: var(--color-acento);
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  margin-bottom: 0.35rem;
+  border: 1px solid hsla(28, 70%, 45%, 0.25);
+}
+
+/* Contenedor de la barra de progreso y las 12 casillas visuales de la bandeja */
+.bandeja-progreso-contenedor {
+  background: var(--color-superficie);
+  border: 1.5px solid var(--borde);
+  border-radius: 1.1rem;
+  padding: 1.15rem 1.35rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--sombra-sm);
+}
+
+.bandeja-progreso-info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.65rem;
+  font-size: 0.93rem;
+}
+
+.bandeja-chip-progreso {
+  background: var(--color-fondo);
+  color: var(--color-principal);
+  border: 1px solid var(--borde);
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.84rem;
+  font-weight: 800;
+}
+
+.bandeja-chip-progreso.mayorista-activo {
+  background: var(--color-exito-fondo);
+  color: var(--color-exito-texto);
+  border-color: var(--color-exito-borde);
+}
+
+/* Barra de progreso con marcador de 6 prendas (-15%) */
+.bandeja-barra-pista {
+  position: relative;
+  height: 0.75rem;
+  background: var(--color-fondo);
+  border-radius: 999px;
+  border: 1px solid var(--borde-suave);
+  overflow: visible;
+  margin-bottom: 1.25rem;
+}
+
+.bandeja-barra-relleno {
+  height: 100%;
+  background: var(--grad-acento);
+  border-radius: 999px;
+  transition: width 0.38s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s ease;
+}
+
+.bandeja-barra-relleno.mayorista-activo {
+  background: linear-gradient(90deg, var(--color-acento) 0%, var(--color-salvia) 100%);
+}
+
+.bandeja-hito-mayorista {
+  position: absolute;
+  left: 50%;
+  top: -0.35rem;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+
+.bandeja-hito-mayorista::before {
+  content: "";
+  width: 3px;
+  height: 1.4rem;
+  background: var(--color-acento);
+  border-radius: 2px;
+}
+
+.bandeja-hito-mayorista span {
+  margin-top: 0.12rem;
+  font-size: 0.68rem;
+  font-weight: 800;
+  background: var(--color-superficie);
+  color: var(--color-acento);
+  border: 1px solid var(--color-acento);
+  padding: 0.05rem 0.45rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+/* Cuadrícula visual de las 12 casillas del Carrito de Bandeja */
+.bandeja-slots-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(3.2rem, 1fr));
+  gap: 0.55rem;
+  margin-top: 0.4rem;
+}
+
+@media (min-width: 48rem) {
+  .bandeja-slots-grid {
+    grid-template-columns: repeat(12, 1fr);
+  }
+}
+
+.bandeja-slot {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: 0.75rem;
+  border: 1.5px dashed var(--borde);
+  background: var(--color-fondo);
+  display: grid;
+  place-items: center;
+  padding: 0;
+  overflow: hidden;
+  transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.bandeja-slot.slot-hito {
+  border-color: var(--color-acento);
+  background: var(--color-acento-light);
+}
+
+.bandeja-slot.ocupado {
+  border-style: solid;
+  border-color: var(--color-principal);
+  cursor: pointer;
+  box-shadow: var(--sombra-xs);
+  animation: burbujaEntrada 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.bandeja-slot.ocupado:hover {
+  transform: translateY(-3px) scale(1.06);
+  border-color: hsl(0, 72%, 52%);
+  box-shadow: var(--sombra-md);
+}
+
+.bandeja-slot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.slot-numero {
+  font-size: 0.76rem;
+  font-weight: 800;
+  color: var(--color-suave);
+  opacity: 0.7;
+}
+
+.slot-quitar-badge {
+  position: absolute;
+  inset: 0;
+  background: rgba(185, 28, 28, 0.76);
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 900;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+.bandeja-slot.ocupado:hover .slot-quitar-badge {
+  opacity: 1;
+}
+
+.slot-etiqueta-hito {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  background: var(--color-acento);
+  color: #ffffff;
+  font-size: 0.58rem;
+  font-weight: 800;
+  padding: 0.05rem 0.28rem;
+  border-radius: 999px;
+  line-height: 1.1;
+}
+
+/* Encabezado de cada columna en el tablero */
+.columna-encabezado {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0.9rem;
+  padding-bottom: 0.55rem;
+  border-bottom: 1.5px dashed var(--borde-suave);
+}
+
+.columna-encabezado h3 {
+  margin: 0 !important;
+}
+
+.columna-sub {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-suave);
+}
+
+.columna-bandeja-destacada {
+  border-color: var(--color-principal-glow) !important;
+  background: linear-gradient(180deg, var(--color-superficie) 0%, var(--color-fondo) 100%) !important;
+}
+
+/* Fichas ricas con miniatura de foto, subtítulo y controles */
+.ficha-contenido-izq {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.ficha-foto {
+  width: 2.85rem;
+  height: 2.85rem;
+  border-radius: 0.55rem;
+  object-fit: cover;
+  border: 1px solid var(--borde-suave);
+  flex-shrink: 0;
+}
+
+.ficha-textos {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.ficha-subdetalle {
+  font-size: 0.77rem;
+  color: var(--color-suave);
+  margin-top: 0.1rem;
+}
+
+.ficha-multiplicador {
+  display: inline-block;
+  background: var(--color-acento-light);
+  color: var(--color-acento);
+  padding: 0.05rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.84rem;
+  margin-left: 0.2rem;
+}
+
+.ficha-acciones-der {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+.btn-ficha-mas {
+  width: 1.95rem;
+  height: 1.95rem;
+  border-radius: 50%;
+  border: 1.5px solid var(--borde);
+  background: var(--color-superficie);
+  color: var(--color-principal);
+  font-weight: 800;
+  font-size: 1rem;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  transition: var(--trans-normal);
+}
+
+.btn-ficha-mas:hover:not(:disabled) {
+  background: var(--color-principal);
+  color: #ffffff;
+  border-color: var(--color-principal);
+}
+
+.ficha-vacia {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 2.2rem 1rem;
+  text-align: center;
+  background: var(--color-superficie);
+  border: 1.5px dashed var(--borde);
+  border-radius: 0.85rem;
+}
+
+.ficha-vacia-icono {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+/* Mini casillas de progreso en el Drawer superior derecho */
+.drawer-slots-mini {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 0.28rem;
+  padding: 0.25rem 0;
+}
+
+.mini-slot {
+  height: 0.45rem;
+  border-radius: 999px;
+  background: var(--color-fondo);
+  border: 1px solid var(--borde);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.mini-slot.hito {
+  border-color: var(--color-acento);
+}
+
+.mini-slot.lleno {
+  background: var(--color-acento);
+  border-color: var(--color-acento);
+}
